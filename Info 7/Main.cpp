@@ -17,6 +17,8 @@ int main(int argc, char* argv[])
     board.read_fen(plateau, "fen.txt");
     board.print_board(plateau);
 
+    // Test
+
     system("pause");
     return 0;
 }
