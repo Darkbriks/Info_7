@@ -2,7 +2,7 @@
 #include "type.h"
 #include <iostream>
 using namespace std;
-void view::print_square(type::type_board B,int x,int y)// Affiche une case
+void print_square(type_board B,int x,int y)// Affiche une case
 {
     char G_piece = B.get_piece(x,y);
     if(G_piece== ' ')
@@ -14,7 +14,7 @@ void view::print_square(type::type_board B,int x,int y)// Affiche une case
         cout << G_piece;
     }
 }
-void view::print_board(type::type_board B)// Affiche le plateau
+void print_board(type_board B)// Affiche le plateau
 {
     if(B.get_fullmove()==1)
     {
@@ -31,7 +31,7 @@ void view::print_board(type::type_board B)// Affiche le plateau
         for(int y = 7; y >= 0; y--)
         {
             cout << ' ';
-            print_square(B, x, y);
+            print_square(B, 7-x, 7-y);
             cout << ' ';
         }
         cout << x+1<< " "<<'|' <<endl;

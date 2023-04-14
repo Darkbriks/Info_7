@@ -1,8 +1,8 @@
-﻿#pragma once
-#include "board.h"
-class view
-{
-public:
-    void print_square(type::type_board B,int x,int y);
-    void print_board(type::type_board B);
-};
+﻿#ifndef VIEW
+#define VIEW
+#include "type.h"
+
+void print_square(type_board B,int x,int y);
+void print_board(type_board B);
+
+#endif
