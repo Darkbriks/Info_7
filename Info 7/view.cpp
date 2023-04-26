@@ -1,40 +1,31 @@
 ﻿#include "view.h"
 #include "type.h"
 #include <iostream>
+
 using namespace std;
-void print_square(type_board B,int x,int y)// Affiche une case
+
+void print_square(const char piece)// Affiche une case
 {
-    char G_piece = B.get_piece(x,y);
-    if(G_piece== ' ')
-    {
-        cout << '-';
-    }
-    else
-    {
-        cout << G_piece;
-    }
+    if(piece== ' ') {cout << '-';}
+    else {cout << piece;}
 }
+
 void print_board(type_board B)// Affiche le plateau
 {
-    if(B.get_fullmove()==1)
-    {
-        cout << "Board Classique : "<<endl;
-    }
-    else
-    {
-        cout << "Apres " << B.get_fullmove()<<" mouvements :"<<endl;
-    }
-    cout <<" ----------------------------"<<endl<< '|' <<"   a  b  c  d  e  f  g  h   "<<'|' << endl;
+    cout << "Tour " << B.get_fullmove() << ", C'est au " << (B.get_turn() == 'w' ? "blanc" : "noir") << " de jouer." << endl;
+    cout << "Il n'y a pas eu de prise ou de coup de pion depuis " << B.get_halfmove() << " coups." << endl;
+    
+    cout << "-----------------------------" << endl << '|' << "  a  b  c  d  e  f  g  h   " << '|' << endl;
     for(int x = 7; x >= 0; x--)
     {
-        cout <<'|' << x+1<< " ";
+        cout <<'|' << x+1;
         for(int y = 7; y >= 0; y--)
         {
             cout << ' ';
-            print_square(B, 7-x, 7-y);
+            print_square(B.get_piece(x, y));
             cout << ' ';
         }
         cout << x+1<< " "<<'|' <<endl;
     }
-    cout <<" ----------------------------"<<endl<< "   a  b  c  d  e  f  g  h" << endl;
+    cout << '|' << "  a  b  c  d  e  f  g  h   " << '|' << endl << "-----------------------------" << endl;
 }

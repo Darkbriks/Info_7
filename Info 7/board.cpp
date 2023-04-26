@@ -10,13 +10,17 @@ using namespace std;
 void print_fen(type_board type_board) {cout << "FEN: " << type_board.get_fen() << endl;}
 
 // Empty the type_board
-void empty_board(type_board type_board) {type_board.set_board_with_fen("8/8/8/8/8/8/8/8");}
+void empty_board(type_board type_board) {type_board.set_board_with_fen("8/8/8/8/8/8/8/8 w - - 0 0");}
 
 // Reset the game
-void reset_board(type_board type_board) {type_board.set_board_with_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"); type_board.fen_other = "wKQkq--0001";}
+void reset_board(type_board type_board) {type_board.set_board_with_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");}
 
 // Move a piece
-void move_piece(const int i1, const int j1, const int i2, const int j2, type_board type_board) {char piece = type_board.get_piece(i1, j1); type_board.set_piece(i1, j1, ' '); type_board.set_piece(i2, j2, piece);}
+void move_piece(const int i1, const int j1, const int i2, const int j2, type_board type_board) // i = ligne, j = colonne
+{
+    type_board.set_piece(i2, j2, type_board.get_piece(i1, j1));
+    type_board.set_piece(i1, j1, ' ');
+}
 
 // Write FEN in a file
 void write_fen(type_board type_board, std::string file_name)

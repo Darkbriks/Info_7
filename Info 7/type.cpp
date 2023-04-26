@@ -127,31 +127,42 @@ void type_board::set_fullmove(const int fullmove) {fen_other[9] = to_string(full
 // Set the FEN
 void type_board::set_board_with_fen(const string fen)
 {
-    // Split the FEN into the board and the other attributes
-    string fen_board = fen.substr(0, fen.find(' '));
-    string fen_other_pure = fen.substr(fen.find(' ') + 1, fen.length() - fen.find(' '));
-
     // Set the board
-    int i = 0; // The row
-    int j = 0; // The column
+    int i = 0; int j = 0; string fen_board = fen.substr(0, fen.find(' '));
+    // Inversion du plateau, car le FEN est donné de la ligne 8 à la ligne 1
+    reverse(fen_board.begin(), fen_board.end());
+    
     for (int k = 0; k < fen_board.length(); k++)
     {
+        if (fen_board[k] == ' ') {break;}
         if (fen_board[k] == '/') {i++; j = 0;}
-        else if (fen_board[k] >= '1' && fen_board[k] <= '8') {j += fen_board[k] - '0';}
-        else {set_piece(i, j, fen_board[k]); j++;}
+        else if (fen_board[k] >= '1' && fen_board[k] <= '8') {for (int l = 0; l < fen_board[k] - '0'; l++) {board[8*i + j] = ' '; j++;}}
+        else {board[8*i + j] = fen_board[k]; j++;}
     }
-
-    // Set the other attributes
+    
+    // Set the other FEN parameters
+    string fen_other_pure = fen.substr(fen.find(' ') + 1); // = w KQkq - 0 1
+    fen_other = "wKQkq--0001";
     set_turn(fen_other_pure[0]);
-    set_castling('w', fen_other_pure[1] == 'K' || fen_other_pure[1] == 'Q');
-    set_castling('b', fen_other_pure[2] == 'K' || fen_other_pure[2] == 'Q');
-    set_en_passant(fen_other_pure.substr(4, 2));
-    set_halfmove(stoi(fen_other_pure.substr(7, 2)));
-    set_fullmove(stoi(fen_other_pure.substr(10, 2)));
+    
+    fen_other_pure = fen_other_pure.substr(fen_other_pure.find(' ') + 1); // = KQkq - 0 1
+    set_castling('w', fen_other_pure[0] == 'K');
+    set_castling('W', fen_other_pure[0] == 'Q' || fen_other_pure[1] == 'Q');
+    set_castling('b', fen_other_pure[0] == 'k' || fen_other_pure[1] == 'k' || fen_other_pure[2] == 'k');
+    set_castling('B', fen_other_pure[0] == 'q' || fen_other_pure[1] == 'q' || fen_other_pure[2] == 'q' || fen_other_pure[3] == 'q');
+
+    fen_other_pure = fen_other_pure.substr(fen_other_pure.find(' ') + 1); // = - 0 1
+    if (fen_other_pure[0] != '-') {set_en_passant(fen_other_pure.substr(0, 2));} else {set_en_passant("--");}
+
+    fen_other_pure = fen_other_pure.substr(fen_other_pure.find(' ') + 1); // = 0 1
+    set_halfmove(stoi(fen_other_pure.substr(0, fen_other_pure.find(' '))));
+
+    fen_other_pure = fen_other_pure.substr(fen_other_pure.find(' ') + 1); // = 1
+    set_fullmove(stoi(fen_other_pure));
 }
 
 // Set the board with an array of pieces
-void type_board::set_board_with_array(char array[64]) {board = array;}
+void type_board::set_board_with_array(char array[64]) {delete[] board; board = array;}
 #pragma endregion
 
 #pragma region Constructors
