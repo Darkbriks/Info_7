@@ -4,6 +4,7 @@
 #include <sstream>
 using namespace std;
 
+#pragma region Type_board
 #pragma region Getters
 // Get the piece at the position (i, j)
 char type_board::get_piece(const int i, const int j) const
@@ -175,4 +176,13 @@ type_board::type_board()
     cout << "Board initialized" << endl;
 }
 
+#pragma endregion
+#pragma endregion
+
+#pragma region Type_mask
+int type_mask::get_mask(const int i, const int j) const {return mask[8*i + j];}
+
+void type_mask::set_mask(const int i, const int j, const int value) const {mask[8*i + j] = value;}
+
+type_mask::type_mask() {mask = new int[64]; for (int i = 0; i < 64; i++) {mask[i] = 0;}}
 #pragma endregion

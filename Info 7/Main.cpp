@@ -3,13 +3,14 @@
 #include "board.h"
 #include "type.h"
 #include "view.h"
+#include "mask.h"
 
 using namespace std;
 
 int main(int argc, char* argv[])
 {
     // Test board functions
-    type_board type_board;
+    /*type_board type_board;
     type_board.set_board_with_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     print_board(type_board);
     
@@ -22,7 +23,16 @@ int main(int argc, char* argv[])
     move_piece(6, 5, 4, 5, type_board);
     print_board(type_board);
     print_fen(type_board);
-    cout << endl;
+    cout << endl;*/
+
+    char16_t c1{0x2654};
+    wcout << c1 << endl;
+    cout << c1 << endl;
+
+    cout << "\0xE2 \0x99 \0x9E" << endl;
+    cout << "\0x265E" << endl;
+    cout << "\0x0000265E" << endl;
+    
     system("pause");
     
     return 0;

@@ -33,4 +33,19 @@ struct type_board
     void set_board_with_array(char array[64]);
 };
 
+struct type_mask
+{
+    // Attributes
+    int *mask = new int[64];
+
+    // Constructor
+    type_mask();
+
+    // Getters
+    int get_mask(int i, int j) const;
+
+    // Setters
+    void set_mask(int i, int j, int value) const;
+};
+
 #endif
