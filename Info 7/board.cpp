@@ -22,6 +22,14 @@ void move_piece(const int i1, const int j1, const int i2, const int j2, type_boa
     type_board.set_piece(i1, j1, ' ');
 }
 
+// Check if two pieces are enemies
+bool is_enemy(const char piece1, const char piece2)
+{
+    if (piece1 >= 'A' and piece1 <= 'Z' and piece2 >= 'a' and piece2 <= 'z') {return true;}
+    if (piece1 >= 'a' and piece1 <= 'z' and piece2 >= 'A' and piece2 <= 'Z') {return true;}
+    return false;
+}
+
 // Write FEN in a file
 void write_fen(type_board type_board, std::string file_name)
 {
