@@ -17,4 +17,63 @@ void highlight_possible_moves(int x, int y, type_mask mask, type_board board)
 
 void highlight_possible_moves_king(int x, int y, type_mask mask, type_board board) {}
 
-void highlight_possible_moves_rook(int x, int y, type_mask mask, type_board board) {}
+void highlight_possible_moves_rook(int x, int y, type_mask* mask, type_board board)
+{
+    mask->set_mask(x,y,5);
+    int i =x+1;
+    while(i<=7)
+    {
+        if(board.get_piece(i,y) != ' ')
+        {
+            mask->set_mask(i,y,1);
+            i = 8;
+        }
+        else
+        {
+            mask->set_mask(i,y,4);
+            i=i+1;
+        }
+    }
+    i =y-1;
+    while(i>=0)
+    {
+        if(board.get_piece(x,i) != ' ')
+        {
+            mask->set_mask(x,i,1);
+            i = -1;
+        }
+        else
+        {
+            mask->set_mask(x,i,4);
+            i=i-1;
+        }
+    }
+    i =x-1;
+    while(i>=0)
+    {
+        if(board.get_piece(i,y) != ' ')
+        {
+            mask->set_mask(i,y,1);
+            i = -1;
+        }
+        else
+        {
+            mask->set_mask(i,y,4);
+            i=i-1;
+        }
+    }
+    i =y+1;
+    while(i<=7)
+    {
+        if(board.get_piece(x,i) != ' ')
+        {
+            mask->set_mask(x,i,1);
+            i = 8;
+        }
+        else
+        {
+            mask->set_mask(x,i,4);
+            i=i+1;
+        }
+    }
+}
