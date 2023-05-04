@@ -25,7 +25,10 @@ void highlight_possible_moves_rook(int x, int y, type_mask* mask, type_board boa
     {
         if(board.get_piece(i,y) != ' ')
         {
-            mask->set_mask(i,y,1);
+            if(is_enemy(board.get_piece(x,y),board.get_piece(i,y)))
+            {
+                mask->set_mask(i,y,1);
+            }
             i = 8;
         }
         else
@@ -39,8 +42,11 @@ void highlight_possible_moves_rook(int x, int y, type_mask* mask, type_board boa
     {
         if(board.get_piece(x,i) != ' ')
         {
-            mask->set_mask(x,i,1);
-            i = -1;
+            if(is_enemy(board.get_piece(x,y),board.get_piece(x,i)))
+            {
+                mask->set_mask(x,i,1);
+            }
+            i=i-1;
         }
         else
         {
@@ -53,8 +59,11 @@ void highlight_possible_moves_rook(int x, int y, type_mask* mask, type_board boa
     {
         if(board.get_piece(i,y) != ' ')
         {
-            mask->set_mask(i,y,1);
-            i = -1;
+            if(is_enemy(board.get_piece(x,y),board.get_piece(i,y)))
+            {
+                mask->set_mask(i,y,1);
+            }
+            i=-1;
         }
         else
         {
@@ -67,7 +76,10 @@ void highlight_possible_moves_rook(int x, int y, type_mask* mask, type_board boa
     {
         if(board.get_piece(x,i) != ' ')
         {
-            mask->set_mask(x,i,1);
+            if(is_enemy(board.get_piece(x,y),board.get_piece(x,i)))
+            {
+                mask->set_mask(x,i,1);
+            }
             i = 8;
         }
         else
