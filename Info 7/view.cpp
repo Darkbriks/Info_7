@@ -1,19 +1,17 @@
 ﻿#include "view.h"
 #include "type.h"
 #include <iostream>
+#include <string>
 #include <map>
 
 using namespace std;
 
 map<char,char> symbole ={{'R', 'R'},{'N', 'N'},{'B', 'B'},{'Q', 'Q'},{'K', 'K'},{'P', 'P'},{'r', 'r'},{'n', 'n'},{'b', 'b'},{'q', 'q'},{'k', 'k'},{'p', 'p'}, {' ', '-'}};
+map<int, int> color_map = {{0, 0}, {1, 130}, {2, 160}, {3, 82}, {4, 214}, {5, 27}, {6, 57}, {7, 51}, {8, 153}};
 
 void print_square_color(const char piece,const int color) {set_background(color); set_foreground(piece);}
 
-void set_background(const int color)
-{
-    if(color == 0) {cout << "\x1b[48;5;0m";} // Black
-    else {cout << "\x1b[48;5;130m";} // White
-}
+void set_background(const int color) {string _color = "\x1b[48;5;" + to_string(color_map[color]) + "m"; cout << _color;}
 
 void set_foreground(const char piece) {cout << ' ' << symbole[piece] << ' ';} 
 
