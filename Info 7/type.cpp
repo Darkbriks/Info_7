@@ -6,17 +6,39 @@ using namespace std;
 
 #pragma region Type_board
 #pragma region Getters
-// Get the piece at the position (i, j)
+/**
+ * \brief return the piece at the position (i, j) with the following convention :
+ * \n i = 0 corresponds to the column a
+ * \n j = 0 corresponds to the row 1 \n
+ * \n If the position is invalid, return '!'
+ * \n If the position is empty, return ' '
+ * \param i the column
+ * \param j the row
+ * \return char, the piece at the position (i, j)
+ */
 char type_board::get_piece(const int i, const int j) const
 {
-    if (i < 0 || i > 7 || j < 0 || j > 7) {return '!';}
-    return board[i*8 + j];
+    if (i < 0 || i > 7 || j < 0 || j > 7) {return '!';} // If the position is invalid, return '!'
+    return board[8*i + j];
 }
 
-// Get the turn
+/**
+ * \brief Return the turn with the following convention :
+ * \n 'w' for white
+ * \n 'b' for black
+ * \return char, the turn
+ */
 char type_board::get_turn() const {return fen_other[0];}
 
-// Get the castling rights for all colors (more use for fen conversion)
+/**
+ * \brief Return the castling rights with the following convention :
+ * \n 'K' if white can castle short
+ * \n 'Q' if white can castle long
+ * \n 'k' if black can castle short
+ * \n 'q' if black can castle long
+ * \n '-' if no castling rights
+ * \return string, the castling rights 
+ */
 string type_board::get_castling() const
 {
     stringstream castling;
@@ -28,19 +50,30 @@ string type_board::get_castling() const
     return castling.str();
 }
 
-// Get the castling rights for specified color and type (more use for checking castling rights in the game)
-string type_board::get_castling(const char color) const
-/* @param color : 'w' or 'b', in minuscule
- * @return : "KQ" if white can castle long and short, "-Q" if white can castle long, "K-" if white can castle short, "--" if white can't castle. Same for black. Empty string if invalid color.
+/**
+ * \brief Return the castling rights for the specified color with the following convention :
+ * \n 'K' if the color can castle short
+ * \n 'Q' if the color can castle long
+ * \n '-' if the color can't castle
+ * \n If the color is invalid, return an empty string
+ * \param color 'w' or 'b', in minuscule
+ * \return string, the castling rights for the specified color
  */
+string type_board::get_castling(const char color) const
 {
     if (color != 'w' && color != 'b') {return "";}
     stringstream castling;
     castling << fen_other[1 + (color == 'b')*2] << fen_other[2 + (color == 'b')*2]; // Add the castling rights to the string stream (0 = false, 1 = true)
-    return castling.str(); // Return the string stream as a string
+    return castling.str();
 }
 
-// Get the en passant case
+/**
+ * \brief Return the en passant square with the following convention :
+ * \n The first character is the column
+ * \n The second character is the row
+ * \n If there is no en passant, return a dash
+ * \return string, the en passant square
+ */
 string type_board::get_en_passant() const
 {
     stringstream en_passant;
@@ -49,7 +82,11 @@ string type_board::get_en_passant() const
     return en_passant.str();
 }
 
-// Get the half move number
+/**
+ * \brief Return the halfmove clock.
+ * \n The halfmove clock is the number since the last capture or pawn move.
+ * \return int, the halfmove clock
+ */
 int type_board::get_halfmove() const
 {
     stringstream halfmove;
@@ -58,7 +95,11 @@ int type_board::get_halfmove() const
     return halfmove_int;
 }
 
-// Get the full move number
+/**
+ * \brief Return the fullmove number.
+ * \n The fullmove number is the number of the move, starting at 1, and incremented after black's move.
+ * \return int, the fullmove number
+ */
 int type_board::get_fullmove() const
 {
     stringstream fullmove;
@@ -67,7 +108,12 @@ int type_board::get_fullmove() const
     return fullmove_int;
 }
 
-// Get the FEN
+/**
+ * \brief Return the FEN string.
+ * \n The FEN string is the board, the turn, the castling rights, the en passant square, the halfmove clock and the fullmove number.
+ * \n An example of FEN string is : "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+ * \return string, the FEN string
+ */
 string type_board::get_fen() const
 {
     stringstream fen_board;
@@ -94,52 +140,94 @@ string type_board::get_fen() const
 #pragma endregion
 
 #pragma region Setters
-// Set the piece at the position (i, j)
+/**
+ * \brief Set a piece on the board at the specified position.
+ * \n If the position is invalid, do nothing.
+ * \n WARNING : the piece is not checked, so it must be valid.
+ * \param i the column
+ * \param j the row
+ * \param piece 
+ */
 void type_board::set_piece(const int i, const int j, const char piece)
 {
     if (i < 0 || i > 7 || j < 0 || j > 7) {return;}
-    board[8*i + j] = piece;
+    board[8*j + i] = piece;
 }
 
-// Set the turn
+/**
+ * \brief Set the turn.
+ * \n WARNING : the turn is not checked, so it must be valid.
+ * \param turn 'w' or 'b'
+ */
 void type_board::set_turn(const char turn) {fen_other[0] = turn;}
 
-// Set the castling rights for specified color and type
-void type_board::set_castling(const char color, const bool castling)
-/* @param color : 'w' or 'b' for set the castle short, and 'W' or 'B' for set the castle long
- * @param castling : true if the player can castle, false otherwise
+/**
+ * \brief Set the castling rights for the specified color.
+ * \param color 'w' or 'b' for set the castle short, and 'W' or 'B' for set the castle long
+ * \param castling true if the player can castle, false otherwise
  */
+void type_board::set_castling(const char color, const bool castling)
 {
-    if (color == 'w') {fen_other[1] = castling ? 'K' : '-';}
+    if (color == 'w') {fen_other[1] = castling ? 'K' : '-';} // true = 'K', false = '-'
     else if (color == 'b') {fen_other[3] = castling ? 'k' : '-';}
     else if (color == 'W') {fen_other[2] = castling ? 'Q' : '-';}
     else if (color == 'B') {fen_other[4] = castling ? 'q' : '-';}
 }
 
-// Set the en passant case
+/**
+ * \brief Set the en passant square.
+ * \n WARNING : the en passant square is not checked, so it must be valid.
+ * \param en_passant the en passant square with the following convention :
+ * \n The first character is the column
+ * \n The second character is the row
+ * \n If there is no en passant, set a dash
+ */
 void type_board::set_en_passant(const string en_passant) {fen_other[5] = en_passant[0]; fen_other[6] = en_passant[1];}
 
-// Set the half move number
+/**
+ * \brief Set the halfmove clock.
+ * \n WARNING : the halfmove clock is not checked, so it must be valid.
+ * \param halfmove the halfmove clock
+ */
 void type_board::set_halfmove(const int halfmove) {fen_other[7] = to_string(halfmove)[0]; fen_other[8] = to_string(halfmove)[1];}
 
-// Set the full move number
+/**
+ * \brief Set the fullmove number.
+ * \n WARNING : the fullmove number is not checked, so it must be valid.
+ * \param fullmove the fullmove number
+ */
 void type_board::set_fullmove(const int fullmove) {fen_other[9] = to_string(fullmove)[0]; fen_other[10] = to_string(fullmove)[1];}
 
-// Set the FEN
+/**
+ * \brief Set the board with a FEN string.
+ * \n The FEN string is the board, the turn, the castling rights, the en passant square, the halfmove clock and the fullmove number.
+ * \n An example of FEN string is : "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+ * \n WARNING : the FEN string is not checked, so it must be valid.
+ * \param fen the FEN string
+ */
 void type_board::set_board_with_fen(const string fen)
 {
     // Set the board
-    int i = 0; int j = 0; string fen_board = fen.substr(0, fen.find(' '));
+    int i = 0; int j = 7; string fen_board = fen.substr(0, fen.find(' '));
     // Inversion du plateau, car le FEN est donné de la ligne 8 à la ligne 1
-    reverse(fen_board.begin(), fen_board.end());
-    
+    //reverse(fen_board.begin(), fen_board.end());
+
+    // Set the board. The FEN board is given from the 8th rank to the 1st rank, so we assign the board from the last cell to the first cell
     for (int k = 0; k < fen_board.length(); k++)
+    {
+        if (fen_board[k] == ' ') {break;}
+        if (fen_board[k] == '/') {i = 0; j--;}
+        else if (fen_board[k] >= '1' && fen_board[k] <= '8') {for (int l = 0; l < fen_board[k] - '0'; l++) {board[8*j + i] = ' '; i++;}}
+        else {board[8*j + i] = fen_board[k]; i++;}
+    }
+    
+    /*for (int k = 0; k < fen_board.length(); k++)
     {
         if (fen_board[k] == ' ') {break;}
         if (fen_board[k] == '/') {i++; j = 0;}
         else if (fen_board[k] >= '1' && fen_board[k] <= '8') {for (int l = 0; l < fen_board[k] - '0'; l++) {board[8*i + j] = ' '; j++;}}
         else {board[8*i + j] = fen_board[k]; j++;}
-    }
+    }*/
     
     // Set the other FEN parameters
     string fen_other_pure = fen.substr(fen.find(' ') + 1); // = w KQkq - 0 1
@@ -162,15 +250,24 @@ void type_board::set_board_with_fen(const string fen)
     set_fullmove(stoi(fen_other_pure));
 }
 
-// Set the board with an array of pieces
+/**
+ * \brief Set the board with an array.
+ * \n The array is the board.
+ * \n The array must be a 64 characters array.
+ * \n An example of array is : "RNBQKBNRPPPPPPPP--/28/--pppppppprnbqkbnr"
+ * \n WARNING : the array is not checked, so it must be valid.
+ * \param array the array
+ */
 void type_board::set_board_with_array(char array[64]) {delete[] board; board = array;}
 #pragma endregion
 
 #pragma region Constructors
-// Default constructor
+/**
+ * \brief Default constructor.
+ * \n Initialize the board to the starting position.
+ */
 type_board::type_board()
 {
-    // Initialize the board to the starting position
     board = new char[64];
     fen_other = "wKQkq--0001";
     cout << "Board initialized" << endl;
