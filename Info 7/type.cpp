@@ -1,4 +1,4 @@
-﻿#include "type.h"
+﻿#include "../Header/type.h"
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -277,9 +277,28 @@ type_board::type_board()
 #pragma endregion
 
 #pragma region Type_mask
-int type_mask::get_mask(const int i, const int j) const {return mask[8*i + j];}
+/**
+ * \brief Get the mask at the given position.
+ * \n If the position is out of bounds, return -1.
+ * \param i the column
+ * \param j the row
+ * \return the mask at the given position
+ */
+int type_mask::get_mask(const int i, const int j) const {return (i >= 0 && i < 8 && j >= 0 && j < 8) ? mask[8*j + i] : -1;}
 
-void type_mask::set_mask(const int i, const int j, const int value) const {mask[8*i + j] = value;}
+/**
+ * \brief Set the mask at the given position.
+ * \n If the position is out of bounds, do nothing.
+ * \n WARNING : the mask is not checked, so it must be valid.
+ * \param i the column
+ * \param j the row
+ * \param value the value to set
+ */
+void type_mask::set_mask(const int i, const int j, const int value) const {if (i >= 0 && i < 8 && j >= 0 && j < 8) {mask[8*j + i] = value;}}
 
+/**
+ * \brief Default constructor.
+ * \n Initialize the mask to 0.
+ */
 type_mask::type_mask() {mask = new int[64]; for (int i = 0; i < 64; i++) {mask[i] = 0;}}
 #pragma endregion

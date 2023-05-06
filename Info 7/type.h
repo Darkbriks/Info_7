@@ -45,17 +45,32 @@ struct type_board
 
 struct type_mask
 {
+    // Cette structure contient une liste d'entiers qui servent de masques pour aider au déplacement des pièces.
+    // Les masques sont des entiers de 0 à 7, chaque valeur correspondant à une couleur. De plus, chaque couleur correspond à une information différente.
+    // Les couleurs sont :
+    //      0 : pas de couleur, rien
+    //      1 : rouge, case attaquée
+    //      2 : 
+    //      3 : 
+    //      4 : 
+    //      5 : 
+    //      6 : 
+    //      7 :
+    // On considère que i = 0 correspond à la colonne a et j = 0 correspond à la ligne 1. On a ainsi par exemple i = 4 et j = 2 pour la case e3.
+    // Pour passer d'un tableau 1D à un tableau 2D, on utilise la formule index = i + 8*j.
+    // Pour passer d'un tableau 2D à un tableau 1D, on utilise les formules i = index % 8 et j = index / 8.
+    
     // Attributes
     int *mask = new int[64];
 
     // Constructor
-    type_mask();
+    type_mask(); // Initialise le masque avec des 0.
 
     // Getters
-    int get_mask(int i, int j) const;
+    int get_mask(int i, int j) const; // Renvoie le masque à la position i, j. Si i ou j est en dehors du tableau, renvoie -1.
 
     // Setters
-    void set_mask(int i, int j, int value) const;
+    void set_mask(int i, int j, int value) const; // Définit le masque à la position i, j. Si i ou j est en dehors du tableau, ne fait rien.
 };
 
 #endif
