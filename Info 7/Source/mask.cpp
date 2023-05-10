@@ -274,7 +274,7 @@ void highlight_attacked_pieces(const char color, type_mask *mask, type_board boa
     {
         for (int j = 0; j < 8; j++) // j = row
         {
-            if (board.get_piece(i, j) != ' ' and attacked_piece(board.get_piece(i, j), i, j, board)) mask->set_mask(i, j, 1);
+            if (board.get_piece(i, j) != ' ' and is_enemy(color == 'w' ? 'P' : 'p', board.get_piece(i, j)) and attacked_piece(board.get_piece(i, j), i, j, board)) mask->set_mask(i, j, 1);
         }
     }
 }
