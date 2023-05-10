@@ -294,3 +294,92 @@ void type_mask::set_mask(const int i, const int j, const int value) const {if (i
  */
 type_mask::type_mask() {mask = new int[64]; for (int i = 0; i < 64; i++) {mask[i] = 0;}}
 #pragma endregion
+#pragma region Game
+struct maillon {
+    string val;
+    maillon* next;
+};
+struct game
+{
+    type_board board;
+    type_mask mask;
+    maillon pile_Historique;
+};
+
+void createListeChaine( maillon** Tete,int N) {
+    maillon* ptr;
+    //cas spécial pour le premier élément
+    if (N <= 0) { 
+        *Tete = NULL;
+    }
+    else {
+        ptr = new maillon; 
+        *Tete = ptr; 
+        ptr->val= "";
+        N=N-1; //on a 1 élément de moins à créer
+        while (N > 0) {
+            ptr->next = new maillon; //on crée un nouvel élément
+            ptr = ptr->next; //ptr pointe le nouvel élément
+            ptr->val = "";
+            N = N - 1; //on a 1 élément de moins à créer
+        }
+        ptr->next = NULL; //on fait pointer le dernier élément vers NULL
+    }
+}
+void afficherListeChaine(maillon* LT) {
+    cout << "FONCTION affiche :" << endl;
+    while (LT->next != NULL) {
+        cout << LT->val;
+        if (LT->next->next != NULL) {
+            cout << " -> ";
+        }
+        LT = LT->next;
+    }
+    cout << endl;
+}
+
+bool inserePositionChaine(maillon** LT, int P, string valeur) {
+    if (P < 0) {
+        return false;
+    }
+    maillon* N = new maillon;
+    N->val = valeur;
+    N->next = NULL;
+    if(P==0){
+        N->next = *LT;
+        *LT = N;
+        return true;
+    }
+    maillon* Np = NULL;
+    maillon* Nc = *LT;
+    for (int i = 0; P > i; i++) {
+        if (Nc == NULL) {
+            return false;
+        }
+        Np = Nc;
+        Nc = Nc->next;
+    }
+    N->next = Nc;
+    Np->next = N;
+    return true;
+}
+void recopieListeChaine(maillon* LT, maillon** LTc) {
+    *LTc = NULL;
+    while (LT != NULL) {
+        maillon* N = new maillon;
+        N->val = LT->val;
+        N->next = NULL;
+        if (*LTc == NULL) {
+            *LTc = N;
+        }
+        else {
+            maillon* E = *LTc;
+            while (E->next != NULL) {
+                E = E->next;
+            }
+            E->next = N;
+        }
+        LT = LT->next;
+    }
+}
+#pragma endregion 
