@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.26)
+#cmake_minimum_required(VERSION 3.22)
 
 project(test)
 
-set(SRC main.cpp board.cpp type.cpp view.cpp)
-set(HEADERS board.h type.h view.h)
+set(SRC Main.cpp Source/board.cpp Source/mask.cpp Source/type.cpp Source/view.cpp)
+set(HEADERS Header/board.h Header/mask.h Header/type.h Header/view.h)
 
 add_executable(test ${SRC} ${HEADERS})
