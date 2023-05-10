@@ -91,19 +91,16 @@ void highlight_possible_moves_bishop(const int x, const int y, type_mask* mask, 
         {
             switch (direction)
             {
-                case 0: i++, j++;
-                case 1: i++, j--;
-                case 2: i--, j++;
-                case 3: i--, j--;
+                case 0: i++; j++; break;
+                case 1: i++; j--; break;
+                case 2: i--; j++; break;
+                case 3: i--; j--; break;
                 default: break;
             }
-			cout << x+i << ' ' << y+j << "; ";
-			mask->set_mask(x+i, y+j, 2);
             if (board.get_piece(x+i, y+j) == ' ') mask->set_mask(x+i, y+j, 4);
             else if (is_enemy(board.get_piece(x, y), board.get_piece(x+i, y+j)) == true) {mask->set_mask(x+i, y+j, 1); break;}
             else break;
         }
-	cout << endl;
     }
 	mask->set_mask(x, y, 5);
 }
