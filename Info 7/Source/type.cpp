@@ -208,7 +208,7 @@ void type_board::set_fullmove(const int fullmove) {fen_other[9] = to_string(full
 void type_board::set_board_with_fen(const string fen)
 {
     // Set the board
-    int i = 0; int j = 0; string fen_board = fen.substr(0, fen.find(' '));
+    int i = 0; int j = 7; string fen_board = fen.substr(0, fen.find(' '));
     // Inversion du plateau, car le FEN est donné de la ligne 8 à la ligne 1
     //reverse(fen_board.begin(), fen_board.end());
 
@@ -216,7 +216,7 @@ void type_board::set_board_with_fen(const string fen)
     for (int k = 0; k < fen_board.length(); k++)
     {
         if (fen_board[k] == ' ') {break;}
-        if (fen_board[k] == '/') {i = 0; j++;}
+        if (fen_board[k] == '/') {i = 0; j--;}
         else if (fen_board[k] >= '1' && fen_board[k] <= '8') {for (int l = 0; l < fen_board[k] - '0'; l++) {set_piece(i, j, ' '); i++;}}
         else {set_piece(i, j, fen_board[k]); i++;}
     }
