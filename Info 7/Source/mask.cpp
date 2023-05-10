@@ -104,3 +104,39 @@ void highlight_possible_moves_bishop(const int x, const int y, type_mask* mask, 
     }
 	mask->set_mask(x, y, 5);
 }
+
+void highlight_possible_moves_queen(int x, int y, type_mask* mask, type_board board)
+{
+    highlight_possible_moves_rook(x,y, mask,board);
+    highlight_possible_moves_bishop(x,y, mask,board);
+}
+
+void highlight_possible_moves_knight(int x, int y, type_mask* mask, type_board board)
+{
+    for (int direction = 0; direction < 4; direction++)
+    {
+        int i = 0, j = 0; // i = column, j = row
+        switch (direction)
+        {
+            case 0: i=i+2; break; // Right
+            case 1: i=i-2; break; // Left
+            case 2: j=j+2; break; // Up
+            case 3: j=j-2; break; // Down
+            default: break;
+        }
+        switch (direction) 
+        {
+            case 0: j = 1; break; 
+            case 1: j = 1; break; 
+            case 2: i = 1; break; 
+            case 3: i = 1; break; 
+            default: break;
+            }
+        if (board.get_piece(x+i, y+j) == ' ') mask->set_mask(x+i, y+j, 4);
+        else if (is_enemy(board.get_piece(x, y), board.get_piece(x+i, y+j)) == true) {mask->set_mask(x+i, y+j, 1); break;}
+        if (board.get_piece(x-i, y-j) == ' ') mask->set_mask(x-i, y-j, 4);
+        else if (is_enemy(board.get_piece(x, y), board.get_piece(x-i, y-j)) == true) {mask->set_mask(x-i, y-j, 1); break;}
+        else break;
+    }
+    mask->set_mask(x, y, 5);
+}
