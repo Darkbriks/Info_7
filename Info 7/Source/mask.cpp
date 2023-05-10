@@ -140,3 +140,23 @@ void highlight_possible_moves_knight(int x, int y, type_mask* mask, type_board b
     }
     mask->set_mask(x, y, 5);
 }
+
+void highlight_possible_moves_pawn(int x, int y, type_mask* mask, type_board board)
+{
+    mask->set_mask(x, y, 5);
+    int j = 1, k = 1;
+    if(board.get_piece(x, y) != 'P')
+    {
+        j = -1, k = 6;
+    }
+    if (board.get_piece(x, y + j) == ' ')
+    {
+        mask->set_mask(x, y + j, 4);
+        if(y == k and (board.get_piece(x, y + j + j) == ' '))
+        {
+            mask->set_mask(x, y + (2*j), 4);
+        }
+    }
+    if (is_enemy(board.get_piece(x, y), board.get_piece(x + j, y + j)) == true) {mask->set_mask(x + j, y + j, 1);}
+    if (is_enemy(board.get_piece(x, y), board.get_piece(x - j, y + j)) == true) {mask->set_mask(x - j, y + j, 1);}
+}
