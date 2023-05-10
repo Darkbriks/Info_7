@@ -73,16 +73,42 @@ struct type_mask
     void set_mask(int i, int j, int value) const; // Définit le masque à la position i, j. Si i ou j est en dehors du tableau, ne fait rien.
 };
 
-struct type_maillon {
+struct type_maillon
+{
+    // Liste chaînée pour la pile d'historique
+    // Cette structure contient une chaîne de caractères et un pointeur vers le maillon suivant.
+    // Le maillon suivant est nullptr si le maillon est le dernier de la liste.
+    
+    // Attributes
     std::string val;
-    type_maillon* next;
+    type_maillon* next = nullptr;
+
+    // Constructor
+    type_maillon(); // Initialise le maillon avec la valeur "".
+    type_maillon(std::string val); // Initialise le maillon avec la valeur val.
+    type_maillon(std::string val, type_maillon* next); // Initialise le maillon avec la valeur val et le maillon suivant next.
+
+    // Destructor
+    ~type_maillon(); // Détruit le maillon et tous les maillons suivants.
+
+    // Getters
+    std::string get_val() const; // Renvoie la valeur du maillon.
+    type_maillon* get_next() const; // Renvoie le maillon suivant.
+
+    // Setters
+    void set_val(std::string val); // Définit la valeur du maillon.
+    void set_next(type_maillon* next); // Définit le maillon suivant.
+
+    // Methods
+    void add(std::string val); // Ajoute un maillon à la fin de la liste.
+    void remove(); // Supprime le dernier maillon de la liste et renvoie sa valeur.
+    std::string last() const; // Renvoie la valeur du dernier maillon de la liste.
+    std::string pop(); // Supprime le dernier maillon de la liste et renvoie sa valeur.
+    void print() const; // Affiche la liste.
+    int size() const; // Renvoie la taille de la liste.
+    
 };
 
-struct type_game
-{
-    type_board board;
-    type_mask mask;
-    type_maillon pile_Historique;
-};
+struct type_game {type_board board; type_mask mask; type_maillon pile_Historique;}; // Structure de jeu
 
 #endif
