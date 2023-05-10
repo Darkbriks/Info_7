@@ -73,4 +73,16 @@ struct type_mask
     void set_mask(int i, int j, int value) const; // Définit le masque à la position i, j. Si i ou j est en dehors du tableau, ne fait rien.
 };
 
+struct type_maillon {
+    std::string val;
+    type_maillon* next;
+};
+
+struct type_game
+{
+    type_board board;
+    type_mask mask;
+    type_maillon pile_Historique;
+};
+
 #endif
