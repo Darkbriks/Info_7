@@ -387,9 +387,83 @@ void type_maillon::print() const {cout << get_val() << " "; if (next != NULL) {n
 int type_maillon::size() const {return next == nullptr ? 1 : 1 + next->size();}
 #pragma endregion
 
+#pragma region Type_game
+/**
+ * \brief Get the board.
+ * \return the board
+ */
+type_board type_game::get_board() const {return board;}
 
+/**
+ * \brief Get the mask.
+ * \return the mask
+ */
+type_mask type_game::get_mask() const {return mask;}
 
-#pragma region Game
+/**
+ * \brief Get the chained list that contains the history of the moves.
+ * \return the chained list that contains the history of the moves
+ */
+type_maillon type_game::get_pile_historique() const {return pile_historique;}
+
+/**
+ * \brief Set the board.
+ * \param board the board
+ */
+void type_game::set_board(const type_board board) {this->board = board;}
+
+/**
+ * \brief Set the mask.
+ * \param mask the mask
+ */
+void type_game::set_mask(const type_mask mask) {this->mask = mask;}
+
+/**
+ * \brief Set the chained list that contains the history of the moves.
+ * \param pile_historique the chained list that contains the history of the moves
+ */
+void type_game::set_pile_historique(const type_maillon pile_historique) {this->pile_historique = pile_historique;}
+
+/**
+ * \brief Default constructor.
+ * \n Initialize the board to the default board, the mask to 0 and the chained list to NULL.
+ */
+type_game::type_game() {board = type_board(); mask = type_mask(); pile_historique = type_maillon();}
+
+/**
+ * \brief Constructor with a board.
+ * \n Initialize the board to the given board, the mask to 0 and the chained list to NULL.
+ * \param board the board
+ */
+type_game::type_game(const type_board board) {this->board = board; mask = type_mask(); pile_historique = type_maillon();}
+
+/**
+ * \brief Constructor with a board and a mask.
+ * \n Initialize the board to the given board, the mask to the given mask and the chained list to NULL.
+ * \param board the board
+ * \param mask the mask
+ */
+type_game::type_game(const type_board board, const type_mask mask) {this->board = board; this->mask = mask; pile_historique = type_maillon();}
+
+/**
+ * \brief Constructor with a board, and a chained list that contains the history of the moves.
+ * \n Initialize the board to the given board, the mask to 0 and the chained list to the given chained list.
+ * \param board the board
+ * \param pile_historique the chained list that contains the history of the moves
+ */
+type_game::type_game(const type_board board, const type_maillon pile_historique) {this->board = board; mask = type_mask(); this->pile_historique = pile_historique;}
+
+/**
+ * \brief Constructor with a board, a mask and a chained list that contains the history of the moves.
+ * \n Initialize the board to the given board, the mask to the given mask and the chained list to the given chained list.
+ * \param board the board
+ * \param mask the mask
+ * \param pile_historique the chained list that contains the history of the moves
+ */
+type_game::type_game(const type_board board, const type_mask mask, const type_maillon pile_historique) {this->board = board; this->mask = mask; this->pile_historique = pile_historique;}
+#pragma endregion
+
+#pragma region A garder ? (depend de type_maillon)
 void createListeChaine( type_maillon** Tete,int N) {
     type_maillon* ptr;
     //cas spécial pour le premier élément
