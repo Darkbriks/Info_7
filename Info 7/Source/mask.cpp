@@ -25,9 +25,20 @@ void clear_mask(const type_mask mask) {for (int i = 0; i < 64; i++) mask.set_mas
  */
 void highlight_possible_moves(int x, int y, type_mask *mask, type_board board)
 {
-    if (board.get_piece(x, y) == 'K' or board.get_piece(x, y) == 'k') {highlight_possible_moves_king(x, y, mask, board);}
-    if (board.get_piece(x, y) == 'R' or board.get_piece(x, y) == 'r') {highlight_possible_moves_rook(x, y, mask, board);}
-	if (board.get_piece(x, y) == 'B' or board.get_piece(x, y) == 'b') {highlight_possible_moves_bishop(x, y, mask, board);}
+    char type_piece = toupper(board.get_piece(x, y));
+    
+    switch (type_piece)
+    {
+        case 'K': highlight_possible_moves_king(x, y, mask, board); break; // Right
+        case 'Q': highlight_possible_moves_queen(x, y, mask, board); break; // Right
+        case 'B': highlight_possible_moves_bishop(x, y, mask, board); break; // Right
+        case 'N': highlight_possible_moves_knight(x, y, mask, board); break; // Right
+        case 'R': highlight_possible_moves_rook(x, y, mask, board); break; // Right
+        case 'P': highlight_possible_moves_pawn(x, y, mask, board); break; // Right
+
+
+        default: break;
+    }
 }
 
 /**
