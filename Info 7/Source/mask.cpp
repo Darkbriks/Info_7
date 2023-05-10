@@ -160,3 +160,74 @@ void highlight_possible_moves_pawn(int x, int y, type_mask* mask, type_board boa
     if (is_enemy(board.get_piece(x, y), board.get_piece(x + j, y + j)) == true) {mask->set_mask(x + j, y + j, 1);}
     if (is_enemy(board.get_piece(x, y), board.get_piece(x - j, y + j)) == true) {mask->set_mask(x - j, y + j, 1);}
 }
+
+void mask_choices_menu(type_board board, type_mask mask)
+{
+    int choix = 0;
+    choix = sous_mask_choices(choix);
+    sous_mask_choices(choix,  board, &mask);
+
+}
+
+int sous_mask_choices(int choix)
+{
+    cout << "Voici les differents affichages possibles :" << endl << "    1.Les pieces qui peuvent se deplacer" << endl << "    2.Les pieces ennemies pouvant etre prises" << endl << "    3.Les pieces ennemies pouvant mettre en danger l'une des votres"
+    << endl << "    4.Les actions possibles d'une piece specifique" << endl << "Votre choix : ";
+    cin >> choix;
+    while (choix < 0 or choix > 4)
+    {
+        cout << "Reessayez : ";
+        cin >> choix;
+    }
+    return choix;
+}
+
+void sous_mask_choices(int choix, type_board board, type_mask* mask)
+{
+    int  x, y;
+    switch (choix)
+    {
+    case 1: ; break; 
+    case 2: ; break; 
+    case 3: ; break; 
+    case 4:
+        {
+            cout << "Choisissez la piece (x,y) : ";
+            cin >> x >> y;
+            x = x - 1;
+            y = y - 1;
+            while(board.get_piece(x,y) == ' ')
+            {
+                cout << "La case est vide, reessayez : ";
+                cin >> x >> y;
+            }
+            highlight_possible_moves(x, y, mask, board); 
+            print_board(board, *mask); break;
+        }
+        default: break;
+    }    
+}
+
+void mask_choices(type_board board, type_mask mask)
+{
+    int choix = 0, x, y;
+    choix = sous_mask_choices(choix);
+    string end;
+    while(end != "Non")
+    {
+        sous_mask_choices(choix, board, &mask);
+        cout << "Voulez vous continuer ? (Oui/Non) : ";
+        cin >> end;
+        while(end != "Oui" and end != "Non")
+        {
+            cout << "Reponse incorrecte, veillez recommencer (Oui/Non) : ";
+            cin >> end;
+        }
+        if(end == "Oui")
+        {
+            cout << "Rechoisissez la catégorie (1,2,3,4) : ";
+            cin >> choix;
+        }    
+    }
+
+}
