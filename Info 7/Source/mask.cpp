@@ -1,6 +1,8 @@
 ﻿#include "../Header/mask.h"
 #include "../Header/board.h"
 #include <iostream>
+#include <cctype>
+
 
 using namespace std;
 
