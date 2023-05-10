@@ -295,6 +295,100 @@ void type_mask::set_mask(const int i, const int j, const int value) const {if (i
 type_mask::type_mask() {mask = new int[64]; for (int i = 0; i < 64; i++) {mask[i] = 0;}}
 #pragma endregion
 
+#pragma region Type_maillon
+/**
+ * \brief Get the value of the maillon.
+ * \return the value of the maillon
+ */
+string type_maillon::get_val() const {return val;}
+
+/**
+ * \brief Get the next maillon.
+ * \return the next maillon
+ */
+type_maillon* type_maillon::get_next() const {return next;}
+
+/**
+ * \brief Set the value of the maillon.
+ * \param value the value to set
+ */
+void type_maillon::set_val(const string value) {val = value;}
+
+/**
+ * \brief Set the next maillon.
+ * \param next the next maillon
+ */
+void type_maillon::set_next(type_maillon* next) {this->next = next;}
+
+/**
+ * \brief Default constructor.
+ * \n Initialize the value to "" and the next maillon to NULL.
+ */
+type_maillon::type_maillon() {val = ""; next = NULL;}
+
+/**
+ * \brief Constructor with a value.
+ * \n Initialize the value to the given value and the next maillon to NULL.
+ * \param value the value
+ */
+type_maillon::type_maillon(const string value) {val = value; next = NULL;}
+
+/**
+ * \brief Constructor with a value and a next maillon.
+ * \n Initialize the value to the given value and the next maillon to the given next maillon.
+ * \param value the value
+ * \param next the next maillon
+ */
+type_maillon::type_maillon(const string value, type_maillon* next) {val = value; this->next = next;}
+
+/**
+ * \brief Destructor.
+ * \n Delete this maillon and all the next maillons.
+ */
+type_maillon::~type_maillon() {delete next;}
+
+/**
+ * \brief Add a maillon at the end of the list.
+ * \param val the value of the maillon to add
+ */
+void type_maillon::add(std::string val)
+{
+    if (next == NULL) {next = new type_maillon(val);} // If the next maillon is NULL, we add the maillon at the end
+    else {next->add(val);} // Else, we call the function on the next maillon
+}
+
+/**
+ * \brief Remove the last maillon of the list.
+ */
+void type_maillon::remove() {if (next != NULL) {if (next->next == NULL) {delete next; next = NULL;} else {next->remove();}}}
+
+/**
+ * \brief Get the value of the last maillon of the list.
+ * \return the value of the last maillon of the list
+ */
+string type_maillon::last() const {return next == NULL ? val : next->last();}
+
+/**
+ * \brief Remove the last maillon of the list and return its value.
+ * \return the value of the last maillon of the list
+ */
+string type_maillon::pop() {string res = last(); remove(); return res;}
+
+/**
+ * \brief Print the list.
+ */
+void type_maillon::print() const {cout << get_val() << " "; if (next != NULL) {next->print();}}
+
+
+/**
+ * \brief Get the size of the list.
+ * \return the size of the list
+ */
+int type_maillon::size() const {return next == nullptr ? 1 : 1 + next->size();}
+#pragma endregion
+
+
+
 #pragma region Game
 void createListeChaine( type_maillon** Tete,int N) {
     type_maillon* ptr;
