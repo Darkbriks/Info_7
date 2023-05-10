@@ -50,12 +50,12 @@ struct type_mask
     // Les couleurs sont :
     //      0 : pas de couleur, rien
     //      1 : rouge, case attaquée
-    //      2 : 
-    //      3 : 
-    //      4 : 
-    //      5 : 
-    //      6 : 
-    //      7 :
+    //      2 : unknown
+    //      3 : unknown
+    //      4 : unknown
+    //      5 : unknown
+    //      6 : unknown
+    //      7 : unknown
     // On considère que i = 0 correspond à la colonne a et j = 0 correspond à la ligne 1. On a ainsi par exemple i = 4 et j = 2 pour la case e3.
     // Pour passer d'un tableau 1D à un tableau 2D, on utilise la formule index = i + 8*j.
     // Pour passer d'un tableau 2D à un tableau 1D, on utilise les formules i = index % 8 et j = index / 8.
@@ -109,6 +109,38 @@ struct type_maillon
     
 };
 
-struct type_game {type_board board; type_mask mask; type_maillon pile_Historique;}; // Structure de jeu
+struct type_game
+{
+    // Structure de jeu
+    // Cette structure contient un plateau, un masque et une pile d'historique.
+    // Le plateau contient la position des pièces et les informations de jeu.
+    // Le masque contient des informations sur les cases attaquées, les cases protégées, etc.
+    // La pile d'historique contient les coups joués depuis le début de la partie.
+    // Pour plus d'informations sur le plateau, le masque et la pile d'historique, voir les structures type_board, type_mask et type_maillon.
+
+    // Attributes
+    type_board board;
+    type_mask mask;
+    type_maillon pile_historique;
+
+    // Constructor
+    type_game(); // Initialise le jeu avec une position de départ.
+    type_game(type_board board); // Initialise le jeu avec un plateau donné.
+    type_game(type_board board, type_mask mask); // Initialise le jeu avec un plateau et un masque donnés.
+    type_game(type_board board, type_maillon pile_Historique); // Initialise le jeu avec un plateau et une pile d'historique donnés.
+    type_game(type_board board, type_mask mask, type_maillon pile_Historique); // Initialise le jeu avec un plateau, un masque et une pile d'historique donnés.
+
+    // Getters
+    // Pour faire un get d'une valeur plus précise, utiliser les getters des structures type_board, type_mask et type_maillon grâce à get_board(), get_mask() et get_pile_Historique().
+    type_board get_board() const; // Renvoie le plateau.
+    type_mask get_mask() const; // Renvoie le masque.
+    type_maillon get_pile_historique() const; // Renvoie la pile d'historique.
+    
+    // Setters
+    // Pour faire un set d'une valeur plus précise, utiliser les setters des structures type_board, type_mask et type_maillon grâce à get_board(), get_mask() et get_pile_Historique().
+    void set_board(type_board board); // Définit le plateau.
+    void set_mask(type_mask mask); // Définit le masque.
+    void set_pile_historique(type_maillon pile_Historique); // Définit la pile d'historique.
+};
 
 #endif
