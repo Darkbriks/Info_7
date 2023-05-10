@@ -27,6 +27,7 @@ void highlight_possible_moves(int x, int y, type_mask *mask, type_board board)
 {
     if (board.get_piece(x, y) == 'K' or board.get_piece(x, y) == 'k') {highlight_possible_moves_king(x, y, mask, board);}
     if (board.get_piece(x, y) == 'R' or board.get_piece(x, y) == 'r') {highlight_possible_moves_rook(x, y, mask, board);}
+	if (board.get_piece(x, y) == 'B' or board.get_piece(x, y) == 'b') {highlight_possible_moves_bishop(x, y, mask, board);}
 }
 
 /**
@@ -79,4 +80,30 @@ void highlight_possible_moves_rook(const int x, const int y, type_mask* mask, ty
         }
     }
     mask->set_mask(x, y, 5);
+}
+
+void highlight_possible_moves_bishop(const int x, const int y, type_mask* mask, type_board board)
+{
+    for (int direction = 0; direction < 4; direction++)
+    {
+        int i = 0, j = 0;
+        while (true)
+        {
+            switch (direction)
+            {
+                case 0: i++, j++;
+                case 1: i++, j--;
+                case 2: i--, j++;
+                case 3: i--, j--;
+                default: break;
+            }
+			cout << x+i << ' ' << y+j << "; ";
+			mask->set_mask(x+i, y+j, 2);
+            if (board.get_piece(x+i, y+j) == ' ') mask->set_mask(x+i, y+j, 4);
+            else if (is_enemy(board.get_piece(x, y), board.get_piece(x+i, y+j)) == true) {mask->set_mask(x+i, y+j, 1); break;}
+            else break;
+        }
+	cout << endl;
+    }
+	mask->set_mask(x, y, 5);
 }
