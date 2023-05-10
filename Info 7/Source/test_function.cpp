@@ -2,6 +2,8 @@
 #include <iostream>
 #include <random>
 
+#include "../Header/view.h"
+
 using namespace std;
 
 /**
@@ -146,7 +148,43 @@ void test_all_type_board_setters(type_board board)
         for (int j = 0; j < 8; j++)
         {
             cout << board.get_piece(i, j) << " ";
+            
         }
         cout << endl;
     }
+}
+/**
+ * @brief Test random getter of type_mask
+ * @param mask the mask
+ */
+void test_all_type_mask_getters(type_mask mask)
+{
+    type_board B;
+    B.set_board_with_fen("rnbqkbnr/pppppppp/8/8/3R3P/8/PPPPPPPP/RNBKQBNR w KQkq - 0 1");
+    print_board(B,mask);
+    int x = random(7,7),y = random(8,9);
+    for(int C =0; C < 10;C++)
+    {
+        cout <<x<<','<<y<< " : " <<mask.get_mask(x,y)<< endl;
+        x = random(0,7);
+        y = random(0,9);
+    }
+}
+/**
+ * @brief Test random setters of type_mask
+ * @param mask the mask
+ */
+void test_all_type_mask_setters(type_mask mask)
+{
+    type_board B;
+    B.set_board_with_fen("rnbqkbnr/pppppppp/8/8/3R3P/8/PPPPPPPP/RNBKQBNR w KQkq - 0 1");
+    int x = random(7,7),y = random(8,9);
+    for(int C =0; C < 10;C++)
+    {
+        mask.set_mask(x,y,random(0,9));
+        cout <<x<<','<<y<< " : " <<mask.get_mask(x,y)<< endl;
+        x = random(0,7);
+        y = random(0,9);
+    }
+    print_board(B,mask);
 }
