@@ -3,6 +3,8 @@
 
 #include <string>
 
+int random(int a, int b);
+
 struct type_board
 {
     // Cette structure contient toutes les informations relatives à la position des pièces sur l'échiquier et à l'état de la partie.
@@ -93,6 +95,7 @@ struct type_maillon
 
     // Getters
     std::string get_val() const; // Renvoie la valeur du maillon.
+    std::string get_val(int i) const; // Renvoie la valeur du ième maillon. Si i est en dehors de la liste, renvoie "".
     type_maillon* get_next() const; // Renvoie le maillon suivant.
 
     // Setters
