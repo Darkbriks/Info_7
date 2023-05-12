@@ -17,6 +17,15 @@ type_mask empty_mask() {const type_mask mask; return mask;}
  */
 void clear_mask(const type_mask mask) {for (int i = 0; i < 64; i++) mask.set_mask(i/8, i%8, 0);}
 
+bool king_in_check(const char color, type_board board)
+{
+    type_mask mask = empty_mask();
+    highlight_attacked_pieces(color, &mask, board);
+    for (int i = 0; i < 8; i++) {for (int j = 0; j < 8; j++) {if (mask.get_mask(i, j) == 1 and board.get_piece(i, j) == (color == 'w' ? 'K' : 'k')) {return true;}}}
+    return false;
+}
+
+
 /**
  * \brief Set case color in function of the piece color and possible moves
  * \param x The column of the case
@@ -31,21 +40,6 @@ bool set_case_color(const int x, const int y, const char piece, type_mask *mask,
 {
     if (board.get_piece(x, y) == ' ') {mask->set_mask(x, y, 4); *n+=1; return true;}
     if (is_enemy(piece, board.get_piece(x, y)) == true) {mask->set_mask(x, y, 1); *n+=1;}
-    return false;
-}
-bool king_in_check(type_board board, char color)
-{
-    for(int x = 0; x < 7; x++ )
-    {
-        for(int y = 0; y < 7; y++ )
-        {
-            if(board.get_piece(x,y) == 'K')
-            {
-                if(attacked_piece(color, x, y ,board)){return true;}
-            }
-        }
-
-    }
     return false;
 }
 
@@ -91,7 +85,10 @@ int highlight_possible_moves_king(const int x, const int y, type_mask *mask, typ
         for (int j = -1; j < 2; j++) // j = row
         {
             if (i == 0 and j == 0) {mask->set_mask(x, y, 5);} // Check if the position is the king
-            set_case_color(x+i, y+j, board.get_piece(x, y), mask, board, &n);
+            // Check if the king is in echec
+            type_board board_tmp = board;
+            move_piece(x, y, x+i, y+j, board_tmp);
+            if (king_in_check(board.get_turn(), board_tmp) == false) {set_case_color(x+i, y+j, board.get_piece(x, y), mask, board, &n);}
         }
     }
     return n;
@@ -243,7 +240,7 @@ void highlight_movable_pieces(const char color, type_mask *mask, type_board boar
             {
                 type_mask temp_mask = empty_mask();
                 if (board.get_piece(i, j) == toupper(board.get_piece(i, j)) and color == 'w' and highlight_possible_moves(i, j, &temp_mask, board) > 0) {mask->set_mask(i, j, 2);}
-                else if (color == 'b' and highlight_possible_moves(i, j, &temp_mask, board) > 0) {mask->set_mask(i, j, 2);}
+                else if (board.get_piece(i, j) == tolower(board.get_piece(i, j)) and color == 'b' and highlight_possible_moves(i, j, &temp_mask, board) > 0) {mask->set_mask(i, j, 2);}
             }
         }
     }

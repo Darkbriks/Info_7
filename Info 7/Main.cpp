@@ -16,8 +16,11 @@ using namespace std;
 int main(int argc, char* argv[])
 {
     type_board board;
-    reset_board(board);
+    //reset_board(board);
+    board.set_board_with_fen("8/pppppppp/4K3/8/8/8/PPPPPPPP/8 w KQkq - 0 1");
     type_mask mask = empty_mask();
+    if (king_in_check('w', board)) cout << "white king in check" << endl;
+    //highlight_possible_moves_king(4, 5, &mask, board);
     print_board(board, mask);
     cout << endl;
 
@@ -33,7 +36,7 @@ int main(int argc, char* argv[])
     move_piece(i1, j1, i2, j2, board);
     print_board(board);*/
 
-    while (true)
+    /*while (true)
     {
         one_run(2, &board);
         cout << endl;
@@ -42,7 +45,7 @@ int main(int argc, char* argv[])
         one_run(1, &board);
         cout << endl;
         system("pause");
-    }
+    }*/
 
     /*string positionCommand = "position fen rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     string goCommand = "go depth 10";

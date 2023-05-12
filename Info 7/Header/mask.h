@@ -7,6 +7,8 @@
 type_mask empty_mask(); // Returns an empty mask
 void clear_mask(type_mask mask); // Resets the mask to 0
 
+bool king_in_check(char color, type_board board); // Returns true if the king of the specified color is in check
+
 // Higlihts functions
 int highlight_possible_moves(int x, int y, type_mask *mask, type_board board); // Highlights all possible moves for a piece
 int highlight_possible_moves_king(int x, int y, type_mask *mask, type_board board); // Highlights all possible moves for a king (one square in all directions)
