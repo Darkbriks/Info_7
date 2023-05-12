@@ -7,9 +7,8 @@
 type_mask empty_mask(); // Returns an empty mask
 void clear_mask(type_mask mask); // Resets the mask to 0
 
-bool king_in_check(char color, type_board board); // Returns true if the king of the specified color is in check
-
 // Higlihts functions
+bool king_in_check(type_board board, char color);
 int highlight_possible_moves(int x, int y, type_mask *mask, type_board board); // Highlights all possible moves for a piece
 int highlight_possible_moves_king(int x, int y, type_mask *mask, type_board board); // Highlights all possible moves for a king (one square in all directions)
 int highlight_possible_moves_rook(int x, int y, type_mask *mask, type_board board); // Highlights all possible moves for a rook (all squares in horizontal and vertical directions)
@@ -19,6 +18,7 @@ int highlight_possible_moves_knight(int x, int y, type_mask *mask, type_board bo
 int highlight_possible_moves_pawn(int x, int y, type_mask *mask, type_board board); // Highlights all possible moves for a pawn (one square forward, two squares forward (if it's the first move), and one square diagonally forward (if there's an enemy piece))
 
 void highlight_movable_pieces(char color, type_mask *mask, type_board board); // Highlights all movable pieces of a color
+bool attacked_piece(const char piece, const int x, const int y, type_board board);
 void highlight_attacked_pieces(char color, type_mask *mask, type_board board); // Highlights all attacked pieces of a color
 void highlight_take_pieces(int x, int y, type_mask *mask, type_board board); // Highlights all pieces that can take a piece
 
