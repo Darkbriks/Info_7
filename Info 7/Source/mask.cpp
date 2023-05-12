@@ -33,6 +33,21 @@ bool set_case_color(const int x, const int y, const char piece, type_mask *mask,
     if (is_enemy(piece, board.get_piece(x, y)) == true) {mask->set_mask(x, y, 1); *n+=1;}
     return false;
 }
+bool king_in_check(type_board board, char color)
+{
+    for(int x = 0; x < 7; x++ )
+    {
+        for(int y = 0; y < 7; y++ )
+        {
+            if(board.get_piece(x,y) == 'K')
+            {
+                if(attacked_piece(color, x, y ,board)){return true;}
+            }
+        }
+
+    }
+    return false;
+}
 
 /**
  * \brief Highlight all possible moves of a piece
