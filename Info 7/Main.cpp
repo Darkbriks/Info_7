@@ -1,57 +1,58 @@
 #include <iostream>
 #include <sstream>
+#include <array>
+#include <string>
+#include <cstdlib>
 #include "Header/board.h"
+#include "Header/game.h"
+#include "Header/mask.h"
 #include "Header/type.h"
 #include "Header/view.h"
-#include "Header/mask.h"
+#include "Header/stockfish.h"
 #include "Header/test_function.h"
 
 using namespace std;
 
 int main(int argc, char* argv[])
 {
-    /*type_board  board;
-    board.set_board_with_fen("rnbqkbnr/pppppppp/8/8/3R3P/8/PPPpPpPP/4KpNR w KQkq - 0 1");
-    
-    type_mask mask;
-    //highlight_possible_moves(0, 3, &mask, board);
-    highlight_possible_moves_rook(3, 4, &mask, board);
-    
-    print_board(board, mask)*/
-
     type_board board;
-    char piece[64] = {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R',
-                    'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',
-                    ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-                    ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-                    ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-                    ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-                    'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p',
-                    'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'};
-
-    char test_mask[64] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-                        ' ', ' ', 'P', ' ', ' ', ' ', ' ', ' ',
-                        ' ', ' ', 'R', ' ', 'p', ' ', ' ', ' ',
-                        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-                        ' ', ' ', ' ', ' ', ' ', 'p', ' ', ' ',
-                        ' ', ' ', ' ', ' ', ' ', ' ', 'K', ' ',
-                        ' ', ' ', ' ', ' ', ' ', ' ', 'P', ' ',
-                        ' ', ' ', 'p', ' ', ' ', ' ', ' ', ' '};
-    board.set_board_with_fen("8/2P5/2R1p3/8/5p2/6K1/6P1/3p4 w - - 0 1");
-    //board.set_board_with_array(test_mask);
-
-    type_mask mask;
-    highlight_possible_moves(2, 2, &mask, board);
-    highlight_possible_moves(6, 5, &mask, board);
-    
+    reset_board(board);
+    type_mask mask = empty_mask();
     print_board(board, mask);
-        
-    //test_all_type_board_getters(board);
-    //system("pause");
+    cout << endl;
 
-    //test_all_type_board_setters(board);
-    //system("pause");
+    /*int i1, j1, i2, j2;
+    choose_mouvement_computer(board, &i1, &j1, &i2, &j2);
+    cout << i1 << j1 << ' ' << i2 << j2 << endl;
+    move_piece(i1, j1, i2, j2, board);
+    print_board(board);
 
+    board.set_turn('b'); cout << board.get_turn() << endl;
+    choose_mouvement_computer(board, &i1, &j1, &i2, &j2);
+    cout << i1 << j1 << ' ' << i2 << j2 << endl;
+    move_piece(i1, j1, i2, j2, board);
+    print_board(board);*/
+
+    while (true)
+    {
+        one_run(2, &board);
+        cout << endl;
+        system("pause");
+
+        one_run(1, &board);
+        cout << endl;
+        system("pause");
+    }
+
+    /*string positionCommand = "position fen rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    string goCommand = "go depth 10";
+
+    string positionOutput = communicate_with_stockfish(positionCommand);
+    string goOutput = communicate_with_stockfish(goCommand);
+
+    cout << positionOutput << endl;
+    cout << goOutput << endl;*/
+    
     system("pause");
     
     return 0;
