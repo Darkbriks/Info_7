@@ -109,7 +109,7 @@ bool test_run(const int col, const int lig, const int f_col, const int f_lig, ty
 {
     type_mask nmask = mask; //nmask = mask;
     if(highlight_possible_moves(col, lig,&nmask, board) > 0 and nmask.get_mask(f_col, f_lig) > 0)
-        {print_board(board, nmask); clear_mask(nmask); return true;} 
+        {clear_mask(nmask); mask.set_mask(f_col, f_lig, 6); mask.set_mask(col, lig, 5); print_board(board, nmask); clear_mask(nmask); return true;} 
     return false;
 }
 
@@ -144,9 +144,7 @@ void choose_mouvement_human(type_board *board/*, type_mask *mask*/,  int *i1, in
             if (s == 'y' or  s =='n') {break;}
             cout << "Erreur, veuillez reessayer." << endl;
         }
-        
         if(s == 'y') {*i1 = col; *j1 = lig; *i2 = f_col; *j2 = f_lig;}
         else {cout << "Mouvement annule." << endl; *i1 = -1; choose_mouvement_human(board, i1, j1, i2, j2);}
     }
-    else {cout << "Mouvement impossible, veuillez saisire un nouveau mouvement." << endl; *i1 = -1; choose_mouvement_human(board, i1, j1, i2, j2);}
-}
+    else {cout << "Mouvement impossible, veuillez saisir un nouveau mouvement." << endl; *i1 = -1; choose_mouvement_human(board, i1, j1, i2, j2);}
