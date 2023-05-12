@@ -1,25 +1,9 @@
 ﻿#include "../Header/test_function.h"
-#include <iostream>
-#include <random>
-
 #include "../Header/view.h"
+#include "../Header/type.h"
+#include <iostream>
 
 using namespace std;
-
-/**
- * @brief Return a random number between a and b
- * @param a the minimum number
- * @param b the maximum number
- * @return int, a random number between a and b
- */
-int random(const int a, const int b)
-{
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<> dis(a, b);
-    return dis(gen);
-}
-
 
 /**
  * @brief Test all getters of type_board

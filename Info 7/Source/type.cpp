@@ -2,7 +2,23 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <random>
+
 using namespace std;
+
+/**
+ * @brief Return a random number between a and b
+ * @param a the minimum number
+ * @param b the maximum number
+ * @return int, a random number between a and b
+ */
+int random(const int a, const int b)
+{
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> dis(a, b);
+    return dis(gen);
+}
 
 #pragma region Type_board
 #pragma region Getters
@@ -301,6 +317,19 @@ type_mask::type_mask() {mask = new int[64]; for (int i = 0; i < 64; i++) {mask[i
  * \return the value of the maillon
  */
 string type_maillon::get_val() const {return val;}
+
+/**
+ * \brief Get the value of the i-th maillon.
+ * \n If the i-th maillon does not exist, return "".
+ * \param i the index of the maillon
+ * \return the value of the i-th maillon
+ */
+string type_maillon::get_val(const int i) const
+{
+    if (i == 0) {return val;}
+    else if (next == NULL) {return "";}
+    else {return next->get_val(i - 1);}
+}
 
 /**
  * \brief Get the next maillon.
