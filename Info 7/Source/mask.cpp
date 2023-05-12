@@ -17,11 +17,10 @@ type_mask empty_mask() {const type_mask mask; return mask;}
  */
 void clear_mask(const type_mask mask) {for (int i = 0; i < 64; i++) mask.set_mask(i/8, i%8, 0);}
 
-bool king_in_check(const char color, type_board board)
+bool king_in_check(type_board board, char color)
 {
-    type_mask mask = empty_mask();
-    highlight_attacked_pieces(color, &mask, board);
-    for (int i = 0; i < 8; i++) {for (int j = 0; j < 8; j++) {if (mask.get_mask(i, j) == 1 and board.get_piece(i, j) == (color == 'w' ? 'K' : 'k')) {return true;}}}
+    for(int x = 0; x < 7; x++ )
+    {for(int y = 0; y < 7; y++ ){if(color == 'w'){if(board.get_piece(x,y) == 'K'){if(attacked_piece('K', x, y ,board)){return true;}}}else if(color = 'b'){if(board.get_piece(x,y) == 'k'){if(attacked_piece('k', x, y ,board)){return true;}}}}}
     return false;
 }
 
