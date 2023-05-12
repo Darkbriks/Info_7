@@ -3,16 +3,12 @@
 
 #include "type.h"
 
-//void one_run(int Joueur);
+void one_run(int player_type, type_board *board);
 
-//void one_run_human();
-void one_run(char Joueur, type_board* board, type_mask* mask);
-void one_run_human(type_board* board);
-void one_run_computer(type_board* board, type_mask* mask);
-void choose_mouvement_human(type_board* board, type_mask* mask);
-bool test_run(int lig, int col, int f_lig, int f_col, type_board board, type_mask mask);
+void one_run_human(type_board board);
+void choose_mouvement_human(type_board* board, int *i1, int *j1, int *i2, int *j2);
 
-void one_run_computer();
-void choose_mouvement_computer();
+void one_run_computer(type_board board);
+void choose_mouvement_computer(type_board board, int *i1, int *j1, int *i2, int *j2);
 
 #endif 
