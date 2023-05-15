@@ -280,7 +280,6 @@ type_board::type_board()
     fen_other = "wKQkq--0001";
     cout << "Board initialized" << endl;
 }
-
 #pragma endregion
 #pragma endregion
 

@@ -18,22 +18,12 @@ type_mask empty_mask() {const type_mask mask; return mask;}
 void clear_mask(const type_mask mask) {for (int i = 0; i < 64; i++) mask.set_mask(i/8, i%8, 0);}
 
 /**
- * \brief Set case color in function of the piece color and possible moves
- * \param x The column of the case
- * \param y The row of the case
- * \param piece The piece to check
- * \param mask The mask to set
+ * \brief Return true if the king is in check
+ * \param color The color of the king
  * \param board The board
- * \param n number of moves
- * \return bool, true if can continue, false if not
+ * \return bool, true if the king is in check, false if not
  */
-bool set_case_color(const int x, const int y, const char piece, type_mask *mask, type_board board, int *n)
-{
-    if (board.get_piece(x, y) == ' ') {mask->set_mask(x, y, 4); *n+=1; return true;}
-    if (is_enemy(piece, board.get_piece(x, y)) == true) {mask->set_mask(x, y, 1); *n+=1;}
-    return false;
-}
-bool king_in_check(type_board board, char color)
+bool king_in_check(const char color, const type_board board)
 {
     for(int x = 0; x < 7; x++ )
     {
@@ -45,6 +35,54 @@ bool king_in_check(type_board board, char color)
     return false;
 }
 
+/**
+ * \brief Return true if the king is in check after a move of any piece
+ * \param color The color of the king
+ * \param x1 The column of the piece
+ * \param y1 The row of the piece
+ * \param x2 The column of the destination
+ * \param y2 The row of the destination
+ * \param board The board
+ * \return bool, true if the king is in check after the move, false if not
+ */
+bool king_in_check(const char color, const int x1, const int y1, const int x2, const int y2, type_board board)
+{
+    char piece = board.get_piece(x2, y2);
+    move_piece(x1, y1, x2, y2, board);
+    bool result = king_in_check(color, board);
+    move_piece(x2, y2, x1, y1, board);
+    board.set_piece(x2, y2, piece);
+    return result;
+}
+
+/**
+ * \brief Set case color in function of the piece color and possible moves
+ * \param x1 The column of the departure
+ * \param y1 The row of the departure
+ * \param x2 The column of the destination
+ * \param y2 The row of the destination
+ * \param piece The piece to check
+ * \param mask The mask to set
+ * \param board The board
+ * \param n number of moves
+ * \return bool, true if can continue, false if not
+ */
+bool set_case_color(const int x1, const int y1, const int x2, const int y2, const char piece, type_mask *mask, const type_board board, int *n)
+{
+    /*if (board.get_piece(x, y) == ' ') {mask->set_mask(x, y, 4); *n+=1; return true;} // Empty
+    if (is_enemy(piece, board.get_piece(x, y)) == true) {mask->set_mask(x, y, 1); *n+=1;} // Enemy
+    return false;*/
+    // Add check if king is in check after move in previous function
+    if (board.get_piece(x2, y2) == ' ' /*and king_in_check('w', x1, y1, x2, y2, board) == false*/)
+    {
+        mask->set_mask(x2, y2, 4); *n+=1; return true; // Empty
+    }
+    if (is_enemy(piece, board.get_piece(x2, y2)) == true /*and king_in_check('w', x1, y1, x2, y2, board) == false*/)
+    {
+        mask->set_mask(x2, y2, 1); *n+=1; return false; // Enemy
+    }
+    return false;
+}
 
 /**
  * \brief Highlight all possible moves of a piece
@@ -60,12 +98,12 @@ int highlight_possible_moves(const int x, const int y, type_mask *mask, type_boa
     
     switch (type_piece)
     {
-        case 'K': n += highlight_possible_moves_king(x, y, mask, board); break; // Right
-        case 'Q': n += highlight_possible_moves_queen(x, y, mask, board); break; // Right
-        case 'B': n += highlight_possible_moves_bishop(x, y, mask, board); break; // Right
-        case 'N': n += highlight_possible_moves_knight(x, y, mask, board); break; // Right
-        case 'R': n += highlight_possible_moves_rook(x, y, mask, board); break; // Right
-        case 'P': n += highlight_possible_moves_pawn(x, y, mask, board); break; // Right
+        case 'K': n += highlight_possible_moves_king(x, y, mask, board); break;
+        case 'Q': n += highlight_possible_moves_queen(x, y, mask, board); break;
+        case 'B': n += highlight_possible_moves_bishop(x, y, mask, board); break;
+        case 'N': n += highlight_possible_moves_knight(x, y, mask, board); break;
+        case 'R': n += highlight_possible_moves_rook(x, y, mask, board); break;
+        case 'P': n += highlight_possible_moves_pawn(x, y, mask, board); break;
         default: break;
     }
     return n;
@@ -80,17 +118,15 @@ int highlight_possible_moves(const int x, const int y, type_mask *mask, type_boa
  * \param board the board
  * \return int, number of moves
  */
-int highlight_possible_moves_king(const int x, const int y, type_mask *mask, type_board board)
+int highlight_possible_moves_king(const int x, const int y, type_mask *mask, const type_board board)
 {
-    int n = 0, k = 0;
+    int n = 0;
     for (int i = 1; i > -2; i--) // i = column
     {
         for (int j = -1; j < 2; j++) // j = row
         {
             if (i == 0 and j == 0) {mask->set_mask(x, y, 5);} // Check if the position is the king
-            //else if(king_in_check(board,board.get_turn())){ k++;}
-            //else{set_case_color(x+i, y+j, board.get_piece(x, y), mask, board, &n);}
-            set_case_color(x+i, y+j, board.get_piece(x, y), mask, board, &n);
+            {set_case_color(x, y, x+i, y+j, board.get_piece(x, y), mask, board, &n);}
         }
     }
     return n;
@@ -108,10 +144,10 @@ int highlight_possible_moves_king(const int x, const int y, type_mask *mask, typ
 int highlight_possible_moves_rook(const int x, const int y, type_mask* mask, type_board board)
 {
     int i = 0, j = 0, n =0; // i = column, j = row, n = number of move
-    while (true) {i++; if (!set_case_color(x+i, y, board.get_piece(x, y), mask, board, &n)) break;} i = 0;
-    while (true) {i--; if (!set_case_color(x+i, y, board.get_piece(x, y), mask, board, &n)) break;} i = 0;
-    while (true) {j++; if (!set_case_color(x, y+j, board.get_piece(x, y), mask, board, &n)) break;} j = 0;
-    while (true) {j--; if (!set_case_color(x, y+j, board.get_piece(x, y), mask, board, &n)) break;} j = 0;
+    while (true) {i++; if (!set_case_color(x, y, x+i, y, board.get_piece(x, y), mask, board, &n)) break;} i = 0;
+    while (true) {i--; if (!set_case_color(x, y, x+i, y, board.get_piece(x, y), mask, board, &n)) break;} i = 0;
+    while (true) {j++; if (!set_case_color(x, y, x, y+j, board.get_piece(x, y), mask, board, &n)) break;} j = 0;
+    while (true) {j--; if (!set_case_color(x, y, x, y+j, board.get_piece(x, y), mask, board, &n)) break;} j = 0;
     mask->set_mask(x, y, 5); return n;
 }
 
@@ -140,7 +176,7 @@ int highlight_possible_moves_bishop(const int x, const int y, type_mask* mask, t
                 case 3: i--; j--; break;
                 default: break;
             }
-            if (!set_case_color(x+i, y+j, board.get_piece(x, y), mask, board, &n)) break;
+            if (!set_case_color(x, y, x+i, y+j, board.get_piece(x, y), mask, board, &n)) break;
         }
     }
 	mask->set_mask(x, y, 5); return n;
@@ -187,13 +223,13 @@ int highlight_possible_moves_knight(const int x, const int y, type_mask* mask, t
         }
         if (direction < 2) // Right or Left
         {
-                set_case_color(x+i, y+j + 1, board.get_piece(x, y), mask, board, &n);
-                set_case_color(x+i, y+j - 1, board.get_piece(x, y), mask, board, &n);
+            set_case_color(x, y, x+i, y+j + 1, board.get_piece(x, y), mask, board, &n);
+            set_case_color(x, y, x+i, y+j - 1, board.get_piece(x, y), mask, board, &n);
         }
         else // Up or Down
         {
-                set_case_color(x+i + 1, y+j, board.get_piece(x, y), mask, board, &n);
-                set_case_color(x+i - 1, y+j, board.get_piece(x, y), mask, board, &n);
+            set_case_color(x, y, x+i + 1, y+j, board.get_piece(x, y), mask, board, &n);
+            set_case_color(x, y, x+i - 1, y+j, board.get_piece(x, y), mask, board, &n);
         }
     }
     mask->set_mask(x, y, 5); return n;
@@ -242,7 +278,7 @@ void highlight_movable_pieces(const char color, type_mask *mask, type_board boar
             {
                 type_mask temp_mask = empty_mask();
                 if (board.get_piece(i, j) == toupper(board.get_piece(i, j)) and color == 'w' and highlight_possible_moves(i, j, &temp_mask, board) > 0) {mask->set_mask(i, j, 2);}
-                else if (color == 'b' and highlight_possible_moves(i, j, &temp_mask, board) > 0) {mask->set_mask(i, j, 2);}
+                else if (board.get_piece(i, j) == tolower(board.get_piece(i, j)) and color == 'b' and highlight_possible_moves(i, j, &temp_mask, board) > 0) {mask->set_mask(i, j, 2);}
             }
         }
     }
@@ -312,6 +348,8 @@ void highlight_take_pieces(const int x, const int y, type_mask *mask, type_board
         }
     }
 }
+
+#pragma region Mask choices
 void mask_choices_menu(type_board board, type_mask mask)
 {
     int choix = 0;
@@ -358,11 +396,6 @@ void sous_mask_choices(int choix, type_board board, type_mask* mask)
             highlight_possible_moves(x, y, mask, board); 
             print_board(board, *mask); break;
         }
-    case 5:
-        {
-            choix = sous_mask_choices(choix);
-            sous_mask_choices(choix, board, mask); break;
-        }
         default: break;
     }    
 }
@@ -384,9 +417,9 @@ void mask_choices(type_board board, type_mask mask)
         }
         if(end == "Oui")
         {
-            cout << "Rechoisissez la categorie (1,2,3,4 ou 5 pour revoir leur correspondance) : ";
+            cout << "Rechoisissez la catégorie (1,2,3,4) : ";
             cin >> choix;
-            sous_mask_choices(choix, board, &mask);
         }    
     }
 }
+#pragma endregion
