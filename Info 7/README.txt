@@ -47,7 +47,7 @@ Seance 6 : boucle de jeu
     
 Seance 7 : historique et analyse
 
-    Historique : Fait en partie et non intégré a la boucle de jeu
+    Historique : 2/3 fait mais non intégré a la boucle de jeu
     Analyse de code : Non fait
     
    
