@@ -38,6 +38,8 @@ void one_run_computer(type_board board, int *param)
     
     int i1, j1, i2, j2;
     choose_mouvement_computer(board, &i1, &j1, &i2, &j2);
+    //char piece = board.get_piece(i1, j1);
+    //history.add_moves_history(piece + to_string(i1) + to_string(j1) + to_string(i2) + to_string(j2));
     move_piece(i1, j1, i2, j2, board);
 }
 
@@ -162,7 +164,11 @@ void one_run_human(type_board board, int *param)
             default: break;
         }
         // If the player wants to move a piece and the move is possible, move the piece
-        if (c == 1 and i1 != -1) {move_piece(i1, j1, i2, j2, board);}
+        if (c == 1 and i1 != -1) {
+            //char piece = board.get_piece(i1, j1);
+            //history.add_moves_history(piece + to_string(i1) + to_string(j1) + to_string(i2) + to_string(j2));
+            move_piece(i1, j1, i2, j2, board);
+        }
         else if (c == 1) {cout << "Ce mouvement n'est pas possible" << endl;}
     }
 }
