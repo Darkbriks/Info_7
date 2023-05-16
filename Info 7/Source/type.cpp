@@ -415,6 +415,7 @@ void type_maillon::print() const {cout << get_val() << " "; if (next != NULL) {n
 int type_maillon::size() const {return next == nullptr ? 1 : 1 + next->size();}
 #pragma endregion
 
+#pragma region Type_history
 type_history::type_history()
 {
     board_history = new type_maillon("rnbqkbnr/pppppppp/K7/8/8/8/PPPPPPPP/RNBQ1BNR w KQkq - 0 1");
@@ -425,7 +426,6 @@ type_history::~type_history()
 {
     delete(board_history); delete(move_history);
 }
-
 
 /**
  * \brief Get the chained list that contains the history of the moves.
@@ -444,8 +444,6 @@ type_maillon* type_history::get_moves_historique() const {return move_history;}
 
 string type_history::get_moves_historique(int i) const {return move_history->get_val(i);}
 
-#pragma region Type_history
-
 /**
  * \brief Set the chained list that contains the history of the board.
  * \param H the chained list that contains the history of the board
@@ -457,12 +455,9 @@ void type_history::set_board_historique(type_maillon* H) {move_history = H;}
  */
 void type_history::set_moves_historique(type_maillon* H) {move_history = H;}
 
-
 void type_history::add_board_history(string val) {board_history->add(val);}
+
 void type_history::add_moves_history(string val) {move_history->add(val);}
-
-
-
 #pragma endregion
 
 #pragma region Type_game
@@ -479,12 +474,6 @@ type_board type_game::get_board() const {return board;}
 type_mask type_game::get_mask() const {return mask;}
 
 /**
- * \brief Get the chained list that contains the history of the moves.
- * \return the chained list that contains the history of the moves
- */
-type_maillon type_game::get_pile_historique() const {return pile_historique;}
-
-/**
  * \brief Set the board.
  * \param board the board
  */
@@ -497,23 +486,17 @@ void type_game::set_board(const type_board board) {this->board = board;}
 void type_game::set_mask(const type_mask mask) {this->mask = mask;}
 
 /**
- * \brief Set the chained list that contains the history of the moves.
- * \param pile_historique the chained list that contains the history of the moves
- */
-void type_game::set_pile_historique(const type_maillon pile_historique) {this->pile_historique = pile_historique;}
-
-/**
  * \brief Default constructor.
  * \n Initialize the board to the default board, the mask to 0 and the chained list to NULL.
  */
-type_game::type_game() {board = type_board(); mask = type_mask(); pile_historique = type_maillon();}
+type_game::type_game() {board = type_board(); mask = type_mask();}
 
 /**
  * \brief Constructor with a board.
  * \n Initialize the board to the given board, the mask to 0 and the chained list to NULL.
  * \param board the board
  */
-type_game::type_game(const type_board board) {this->board = board; mask = type_mask(); pile_historique = type_maillon();}
+type_game::type_game(const type_board board) {this->board = board; mask = type_mask();}
 
 /**
  * \brief Constructor with a board and a mask.
@@ -521,101 +504,5 @@ type_game::type_game(const type_board board) {this->board = board; mask = type_m
  * \param board the board
  * \param mask the mask
  */
-type_game::type_game(const type_board board, const type_mask mask) {this->board = board; this->mask = mask; pile_historique = type_maillon();}
-
-/**
- * \brief Constructor with a board, and a chained list that contains the history of the moves.
- * \n Initialize the board to the given board, the mask to 0 and the chained list to the given chained list.
- * \param board the board
- * \param pile_historique the chained list that contains the history of the moves
- */
-type_game::type_game(const type_board board, const type_maillon pile_historique) {this->board = board; mask = type_mask(); this->pile_historique = pile_historique;}
-
-/**
- * \brief Constructor with a board, a mask and a chained list that contains the history of the moves.
- * \n Initialize the board to the given board, the mask to the given mask and the chained list to the given chained list.
- * \param board the board
- * \param mask the mask
- * \param pile_historique the chained list that contains the history of the moves
- */
-type_game::type_game(const type_board board, const type_mask mask, const type_maillon pile_historique) {this->board = board; this->mask = mask; this->pile_historique = pile_historique;}
-#pragma endregion
-
-#pragma region A garder ? (depend de type_maillon)
-void createListeChaine( type_maillon** Tete,int N) {
-    type_maillon* ptr;
-    //cas spécial pour le premier élément
-    if (N <= 0) { 
-        *Tete = NULL;
-    }
-    else {
-        ptr = new type_maillon; 
-        *Tete = ptr; 
-        ptr->val= "";
-        N=N-1; //on a 1 élément de moins à créer
-        while (N > 0) {
-            ptr->next = new type_maillon; //on crée un nouvel élément
-            ptr = ptr->next; //ptr pointe le nouvel élément
-            ptr->val = "";
-            N = N - 1; //on a 1 élément de moins à créer
-        }
-        ptr->next = NULL; //on fait pointer le dernier élément vers NULL
-    }
-}
-void afficherListeChaine(type_maillon* LT) {
-    cout << "FONCTION affiche :" << endl;
-    while (LT->next != NULL) {
-        cout << LT->val;
-        if (LT->next->next != NULL) {
-            cout << " -> ";
-        }
-        LT = LT->next;
-    }
-    cout << endl;
-}
-
-bool inserePositionChaine(type_maillon** LT, int P, string valeur) {
-    if (P < 0) {
-        return false;
-    }
-    type_maillon* N = new type_maillon;
-    N->val = valeur;
-    N->next = NULL;
-    if(P==0){
-        N->next = *LT;
-        *LT = N;
-        return true;
-    }
-    type_maillon* Np = NULL;
-    type_maillon* Nc = *LT;
-    for (int i = 0; P > i; i++) {
-        if (Nc == NULL) {
-            return false;
-        }
-        Np = Nc;
-        Nc = Nc->next;
-    }
-    N->next = Nc;
-    Np->next = N;
-    return true;
-}
-void recopieListeChaine(type_maillon* LT, type_maillon** LTc) {
-    *LTc = NULL;
-    while (LT != NULL) {
-        type_maillon* N = new type_maillon;
-        N->val = LT->val;
-        N->next = NULL;
-        if (*LTc == NULL) {
-            *LTc = N;
-        }
-        else {
-            type_maillon* E = *LTc;
-            while (E->next != NULL) {
-                E = E->next;
-            }
-            E->next = N;
-        }
-        LT = LT->next;
-    }
-}
+type_game::type_game(const type_board board, const type_mask mask) {this->board = board; this->mask = mask;}
 #pragma endregion

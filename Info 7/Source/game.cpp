@@ -35,6 +35,7 @@ void one_run(const int player_type, type_board *board, int *param)
 void one_run_computer(type_board board, int *param)
 {
     if (*param == 2) {if (random(1, 2) == 1) {*param = 3; return;} else {*param = 0; return;}}// 1/2 chance to play accept null game
+    if (random(1, 500) == 1) {*param = 1; return;}// 1/500 chance to play abandon
     
     int i1, j1, i2, j2;
     choose_mouvement_computer(board, &i1, &j1, &i2, &j2);
@@ -142,7 +143,7 @@ void one_run_human(type_board board, int *param)
     type_mask mask = empty_mask();
     int c = 0;
 
-    if (*param == 2) {cout << "Votre adversaire a proposé une nulle, voulez vous l'accepter ? (1 pour oui, 0 pour non) : "; cin >> c; if (c == 1) {*param = 3; return;} else {*param = 0; return;}}
+    if (*param == 2) {cout << "Votre adversaire a proposé une nulle, voulez vous l'accepter ? <1 pour oui/2 pour non> : "; cin >> c; if (c == 1) {*param = 3; return;} else {*param = 0; return;}}
     *param = 0;
 
     while(c != 1)
@@ -158,13 +159,14 @@ void one_run_human(type_board board, int *param)
             case 1: choose_mouvement_human(&board, &i1, &j1, &i2, &j2, param); break;
             case 2: mask_choices_menu (board, mask); clear_mask(mask); break;
             case 3: mask_choices(board, mask); clear_mask(mask); break;
-            case 4: char c; cout << "Etes vous sur de vouloir abandonner ? (y/n) : "; cin >> c; if (c == 'y') {*param = 1;} return;
-            case 5: cout << "Etes vous sur de vouloir proposer une nulle ? (y/n) : "; cin >> c; if (c == 'y') {*param = 2;} return;;
-            case 6: cout << "Etes vous sur de vouloir sauvegarder la partie et quitter ? (y/n) : "; cin >> c; if (c == 'y') {*param = 4;} return;
+            case 4: char c; cout << "Etes vous sur de vouloir abandonner ? <y/n> : "; cin >> c; if (c == 'y') {*param = 1;} return;
+            case 5: cout << "Etes vous sur de vouloir proposer une nulle ? <y/n> : "; cin >> c; if (c == 'y') {*param = 2;} return;;
+            case 6: cout << "Etes vous sur de vouloir sauvegarder la partie et quitter ? <y/n> : "; cin >> c; if (c == 'y') {*param = 4;} return;
             default: break;
         }
         // If the player wants to move a piece and the move is possible, move the piece
-        if (c == 1 and i1 != -1) {
+        if (c == 1 and i1 != -1)
+        {
             //char piece = board.get_piece(i1, j1);
             //history.add_moves_history(piece + to_string(i1) + to_string(j1) + to_string(i2) + to_string(j2));
             move_piece(i1, j1, i2, j2, board);
@@ -206,12 +208,12 @@ void choose_mouvement_human(type_board *board,  int *i1, int *j1, int *i2, int *
     int lig, col, f_lig, f_col;
     char s;
 
-    cout << "Etes vous sur de vouloir deplacer une piece ? (y/n) : "; cin >> s;
+    cout << "Etes vous sur de vouloir deplacer une piece ? <y/n> : "; cin >> s;
     if (s == 'n') {one_run_human(*board, param); *i1 = -1; return;}
     
     while(true)
     {
-        cout << "Choisissez une piece a deplacer (colonne/ligne) : "; cin >> col >> lig;
+        cout << "Choisissez une piece a deplacer <colonne/ligne> : "; cin >> col >> lig;
         lig = lig - 1; col = col - 1;
 
         // Si il n'y a pas de piece a cet endroit ou si la piece est de la mauvaise couleur
@@ -219,15 +221,15 @@ void choose_mouvement_human(type_board *board,  int *i1, int *j1, int *i2, int *
         cout << "La case est vide ou la piece est de la mauvaise couleur, veuillez recommencer." << endl;
     }
     
-    cout << "Quelle est sa case d'arivee ? (colonne/ligne) : "; cin >> f_col >> f_lig;
+    cout << "Quelle est sa case d'arivee ? <colonne/ligne> : "; cin >> f_col >> f_lig;
     f_lig = f_lig -1; f_col = f_col -1;
     
     if(test_run(col, lig , f_col, f_lig, *board, mask))
     {
-        cout << "Le mouvement est legal." << endl;
+        cout << "Le mouvement est legal, ";
         while(true)
         {
-            cout << "Souhaitez vous le realiser ? (y/n) :"; cin >> s;
+            cout << "Souhaitez vous le realiser ? <y/n> :"; cin >> s;
             if (s == 'y' or  s =='n') {break;}
             cout << "Erreur, veuillez reessayer." << endl;
         }

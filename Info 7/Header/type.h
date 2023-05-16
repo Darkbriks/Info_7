@@ -120,15 +120,15 @@ struct type_history
     type_history();
 
     ~type_history();
-    
+
     type_maillon* get_board_historique() const; // Renvoie la pile d'historique.
     std::string get_board_historique(int i) const; // Renvoie le i eme maillon de l'historique.
     type_maillon* get_moves_historique() const; // Renvoie la pile d'historique.
     std::string get_moves_historique(int i) const; // Renvoie le i eme maillon de l'historique.
-    
+
     void set_board_historique(type_maillon* pile_Historique); // Définit la pile d'historique.
     void set_moves_historique(type_maillon* pile_Historique); // Définit la pile d'historique.
-    
+
     void add_board_history(std::string val);
     void add_moves_history(std::string val);
 };
@@ -158,45 +158,12 @@ struct type_game
     // Pour faire un get d'une valeur plus précise, utiliser les getters des structures type_board, type_mask et type_maillon grâce à get_board(), get_mask() et get_pile_Historique().
     type_board get_board() const; // Renvoie le plateau.
     type_mask get_mask() const; // Renvoie le masque.
-    
+
     // Setters
     // Pour faire un set d'une valeur plus précise, utiliser les setters des structures type_board, type_mask et type_maillon grâce à get_board(), get_mask() et get_pile_Historique().
     void set_board(type_board board); // Définit le plateau.
     void set_mask(type_mask mask); // Définit le masque.
 };
 
-struct type_game
-{
-    // Structure de jeu
-    // Cette structure contient un plateau, un masque et une pile d'historique.
-    // Le plateau contient la position des pièces et les informations de jeu.
-    // Le masque contient des informations sur les cases attaquées, les cases protégées, etc.
-    // La pile d'historique contient les coups joués depuis le début de la partie.
-    // Pour plus d'informations sur le plateau, le masque et la pile d'historique, voir les structures type_board, type_mask et type_maillon.
-
-    // Attributes
-    type_board board;
-    type_mask mask;
-    type_maillon pile_historique;
-
-    // Constructor
-    type_game(); // Initialise le jeu avec une position de départ.
-    type_game(type_board board); // Initialise le jeu avec un plateau donné.
-    type_game(type_board board, type_mask mask); // Initialise le jeu avec un plateau et un masque donnés.
-    type_game(type_board board, type_maillon pile_Historique); // Initialise le jeu avec un plateau et une pile d'historique donnés.
-    type_game(type_board board, type_mask mask, type_maillon pile_Historique); // Initialise le jeu avec un plateau, un masque et une pile d'historique donnés.
-
-    // Getters
-    // Pour faire un get d'une valeur plus précise, utiliser les getters des structures type_board, type_mask et type_maillon grâce à get_board(), get_mask() et get_pile_Historique().
-    type_board get_board() const; // Renvoie le plateau.
-    type_mask get_mask() const; // Renvoie le masque.
-    type_maillon get_pile_historique() const; // Renvoie la pile d'historique.
-    
-    // Setters
-    // Pour faire un set d'une valeur plus précise, utiliser les setters des structures type_board, type_mask et type_maillon grâce à get_board(), get_mask() et get_pile_Historique().
-    void set_board(type_board board); // Définit le plateau.
-    void set_mask(type_mask mask); // Définit le masque.
-    void set_pile_historique(type_maillon pile_Historique); // Définit la pile d'historique.
-};
 
 #endif

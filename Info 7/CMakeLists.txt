@@ -2,7 +2,7 @@
 
 project(Chess)
 
-set(SRC Main.cpp Source/board.cpp Source/game.cpp Source/mask.cpp Source/type.cpp Source/view.cpp)
-set(HEADERS Header/board.h Header/game.h Header/mask.h Header/type.h Header/view.h)
+set(SRC Main.cpp Source/board.cpp Source/game.cpp Source/historique.cpp Source/mask.cpp Source/type.cpp Source/view.cpp)
+set(HEADERS Header/board.h Header/game.h Header/historique.cpp Header/mask.h Header/type.h Header/view.h)
 
 add_executable(Chess ${SRC} ${HEADERS})

@@ -1,4 +1,4 @@
-﻿Seance 1 : analyse du projet
+﻿﻿Seance 1 : analyse du projet
 
     Fonctions de base : Fait et fonctionnel
     Envirronement du projet : Fait et fonctionnel

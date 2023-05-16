@@ -359,13 +359,13 @@ void mask_choices_menu(type_board board, type_mask mask)
 
 int sous_mask_choices(int choix)
 {
-    cout << "Voici les differents affichages possibles :" << endl << "\t1.Les pieces qui peuvent se deplacer" << endl << "\t2.Les pieces ennemies pouvant etre prises" << endl << "\t3.Les pieces ennemies pouvant attaquer une piece specifique"
-    << endl << "\t4.Les actions possibles d'une piece specifique" << endl << "Votre choix : ";
+    cout << "Options disponibles :" << endl << "\t1.Pieces pouvant se deplacer" << endl << "\t2.Pieces ennemies pouvant etre prises" << endl << "\t3.Pieces pouvant attaquer une piece specifique"
+    << endl << "\t4.Actions possibles d'une piece specifique" << endl << "Entrez votre choix <1/2/3/4> : ";
     cin >> choix;
     while (choix < 0 or choix > 4)
     {
-        cout << "Reessayez : ";
-        cin >> choix;
+        cout << "Choix incorect." << endl;
+        choix = sous_mask_choices(choix);
     }
     return choix;
 }
@@ -379,12 +379,12 @@ void sous_mask_choices(int choix, type_board board, type_mask* mask)
     case 2: highlight_attacked_pieces(board.get_turn(), mask, board); print_board(board, *mask); break; 
     case 3:
         {
-            while (true) {cout << "Colone et ligne de la piece : "; cin >> x >> y; if (board.get_piece(x-1,y-1) != ' ') {break;} cout << "La case est vide, reessayez" << endl;}
+            while (true) {cout << "Position de la piece <colone; ligne> : "; cin >> x >> y; if (board.get_piece(x-1,y-1) != ' ') {break;} cout << "La case est vide, reessayez" << endl;}
             highlight_take_pieces(x-1, y-1, mask, board); print_board(board, *mask); break;
         }
     case 4:
         {
-            cout << "Choisissez la piece (x,y) : ";
+            cout << "Position de la piece <colone; ligne> : ";
             cin >> x >> y;
             x = x - 1;
             y = y - 1;
@@ -396,12 +396,7 @@ void sous_mask_choices(int choix, type_board board, type_mask* mask)
             highlight_possible_moves(x, y, mask, board); 
             print_board(board, *mask); break;
         }
-    case 5:
-        {
-            choix = sous_mask_choices(choix);break;
-            //sous_mask_choices(choix, board, mask); break;
-        }
-        default: break;
+    default: break;
     }    
 }
 
@@ -409,20 +404,20 @@ void mask_choices(type_board board, type_mask mask)
 {
     int choix = 0;
     choix = sous_mask_choices(choix);
-    string end;
-    while(end != "Non")
+    char end =' ';
+    while(end != 'n')
     {
         sous_mask_choices(choix, board, &mask);
-        cout << "Voulez vous continuer ? (Oui/Non) : ";
+        cout << "Souhaitez vous continuer ? <y/n> : ";
         cin >> end;
-        while(end != "Oui" and end != "Non")
+        while(end != 'y' and end != 'n')
         {
-            cout << "Reponse incorrecte, veillez recommencer (Oui/Non) : ";
+            cout << "Reponse incorrecte, veillez recommencer <y/n> : ";
             cin >> end;
         }
-        if(end == "Oui")
+        if(end == 'y')
         {
-            cout << "Rechoisissez la categorie (1,2,3,4 ou 5 pour revoir leur correspondance) : ";
+            cout << "Selectionnez de nouveau la catégorie <1/2/3/4> : ";
             cin >> choix;
         }    
     }
