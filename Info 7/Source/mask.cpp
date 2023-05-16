@@ -396,6 +396,11 @@ void sous_mask_choices(int choix, type_board board, type_mask* mask)
             highlight_possible_moves(x, y, mask, board); 
             print_board(board, *mask); break;
         }
+    case 5:
+        {
+            choix = sous_mask_choices(choix);break;
+            //sous_mask_choices(choix, board, mask); break;
+        }
         default: break;
     }    
 }
@@ -417,7 +422,7 @@ void mask_choices(type_board board, type_mask mask)
         }
         if(end == "Oui")
         {
-            cout << "Rechoisissez la catégorie (1,2,3,4) : ";
+            cout << "Rechoisissez la categorie (1,2,3,4 ou 5 pour revoir leur correspondance) : ";
             cin >> choix;
         }    
     }
