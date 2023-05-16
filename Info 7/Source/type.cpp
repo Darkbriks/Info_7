@@ -415,6 +415,56 @@ void type_maillon::print() const {cout << get_val() << " "; if (next != NULL) {n
 int type_maillon::size() const {return next == nullptr ? 1 : 1 + next->size();}
 #pragma endregion
 
+type_history::type_history()
+{
+    board_history = new type_maillon("rnbqkbnr/pppppppp/K7/8/8/8/PPPPPPPP/RNBQ1BNR w KQkq - 0 1");
+    move_history = new type_maillon();
+}
+
+type_history::~type_history()
+{
+    delete(board_history); delete(move_history);
+}
+
+
+/**
+ * \brief Get the chained list that contains the history of the moves.
+ * \return the chained list that contains the history of the moves
+ */
+type_maillon* type_history::get_board_historique() const {return board_history;}
+
+string type_history::get_board_historique(int i) const {return board_history->get_val(i);}
+
+
+/**
+ * \brief Get the chained list that contains the history of the moves.
+ * \return the chained list that contains the history of the moves
+ */
+type_maillon* type_history::get_moves_historique() const {return move_history;}
+
+string type_history::get_moves_historique(int i) const {return move_history->get_val(i);}
+
+#pragma region Type_history
+
+/**
+ * \brief Set the chained list that contains the history of the board.
+ * \param H the chained list that contains the history of the board
+ */
+void type_history::set_board_historique(type_maillon* H) {move_history = H;}
+/**
+ * \brief Set the chained list that contains the history of the board.
+ * \param H the chained list that contains the history of the board
+ */
+void type_history::set_moves_historique(type_maillon* H) {move_history = H;}
+
+
+void type_history::add_board_history(string val) {board_history->add(val);}
+void type_history::add_moves_history(string val) {move_history->add(val);}
+
+
+
+#pragma endregion
+
 #pragma region Type_game
 /**
  * \brief Get the board.
